@@ -65,6 +65,8 @@ public class StringOutputs {
         assertEquals("1000", mo.toString()); // Dec(1728)
         Numeral twoMoElGroSevenDoDec = new Numeral(5134); // Doz(2*1000 + E*100 + 7*10 + X)
         assertEquals("2E7X", twoMoElGroSevenDoDec.toString());
+        Numeral ElDoDecBiMoSevenGroElDoFiveMoNineDoFive = new Numeral(425988401);
+        assertEquals("EX7E5095", ElDoDecBiMoSevenGroElDoFiveMoNineDoFive.toString());
     }
 
     @Test
@@ -77,11 +79,16 @@ public class StringOutputs {
 
     @Test
     public void largeNumbers() {
-
+        Numeral tenToTheTwelve = new Numeral(1000000000000.0);
+        assertEquals("1.41981E88eE", tenToTheTwelve.toString());
+        Numeral tenToTheTwenty = new Numeral(100000000000000000000.0);
+        assertEquals("3.90X66958X9465e16", tenToTheTwenty.toString());
     }
 
     @Test
     public void hardFractions() {
-
+        Numeral hardFraction1 = new Numeral(94. + (15158. / 20736.));
+        assertEquals("7X.8932", hardFraction1.toString());
+        // TODO: Find a case that requires BigInteger Arithmetic
     }
 }

@@ -64,7 +64,10 @@ class Numeral extends ExpressionElement {
             numberOfSignificantBits = 64 - leadingZeros;
         } else {
             mantissa |= DoubleConstants.MANTISSA_HOB;
-            numberOfSignificantBits = DoubleConstants.EXP_SHIFT + 1;
+            //numberOfSignificantBits = DoubleConstants.EXP_SHIFT + 1;
+            int leadingZeros = 11;
+            int tailZeros = Long.numberOfTrailingZeros(mantissa);
+            numberOfSignificantBits = 64 - leadingZeros - tailZeros;
         }
         exp -= DoubleConstants.EXP_BIAS;
 

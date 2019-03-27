@@ -225,7 +225,7 @@ class FloatingDozenal {
             this.nDigits = this.digits.length - nDigit;
         }
 
-        void doubleToDoz(int exp, long mantissa, int numOfSignificantBits) {
+        void doubleToDoz(int binExp, long mantissa, int numOfSignificantBits) {
             final int tailZeros = Long.numberOfTrailingZeros(mantissa);
             final int numOfMantissaBits = DoubleConstants.EXP_SHIFT + 1 - tailZeros;
 
@@ -233,22 +233,22 @@ class FloatingDozenal {
             boolean exactDecimalConversion = false;
 
             // The number of bits in the mantissa that represent fractional values. (>0 but <1)
-            int fractionalBits = Math.max(0, numOfMantissaBits - exp - 1);
+            int fractionalBits = Math.max(0, numOfMantissaBits - binExp - 1);
 
             // Can it be represented in a long?
-            if (exp <= MAX_SMALL_EXP && exp >= MIN_SMALL_EXP) {
+            if (binExp <= MAX_SMALL_EXP && binExp >= MIN_SMALL_EXP) {
                 // If it is a whole number:
                 if (fractionalBits == 0) {
                     int insignificant;
-                    if (exp > numOfSignificantBits) { // numOfSignificantBits will be 53
-                        insignificant = insignificantDigitsForPow2(exp - numOfSignificantBits - 1);
+                    if (binExp > numOfSignificantBits) { // numOfSignificantBits will be 53
+                        insignificant = insignificantDigitsForPow2(binExp - numOfSignificantBits - 1);
                     } else {
                         insignificant = 0;
                     }
-                    if (exp >= EXP_SHIFT) {
-                        mantissa <<= (exp - EXP_SHIFT);
+                    if (binExp >= EXP_SHIFT) {
+                        mantissa <<= (binExp - EXP_SHIFT);
                     } else {
-                        mantissa >>>= (EXP_SHIFT - exp);
+                        mantissa >>>= (EXP_SHIFT - binExp);
                     }
                     developLongDigits(0, mantissa, insignificant);
                     return;
@@ -267,20 +267,20 @@ class FloatingDozenal {
             //      S = 12^max(0, dozExp) * 2^numberOfFractionalBits
             //          = 2^(numberOfFractionalBits + max(0, dozExp)) * 6^max(0, dozExp)
 
-            int dozExp = estimateDozExp(mantissa, exp);
+            int dozExp = estimateDozExp(mantissa, binExp);
             int B2, B6;
             int S2, S6;
             int M2, M6;
 
             B6 = Math.max(0, -dozExp);
-            B2 = B6 + fractionalBits + exp;
+            B2 = B6 + fractionalBits + binExp;
 
             S6 = Math.max(0, dozExp);
             S2 = S6 + fractionalBits;
 
             M6 = B6;
-            //M2 = M6 - numOfSignificantBits;
-            M2 = B2;
+            M2 = B2 - numOfSignificantBits;
+            //M2 = B2;
 
             //
 
@@ -422,7 +422,7 @@ class FloatingDozenal {
                     // oops. Usually ignore leading zero.
                     dozExp--;
                 } else {
-                    digits[nDigit++] = (char) ('0' + q);
+                    digits[nDigit++] = Characters.getCharacter(q);
                 }
                 //
                 // HACK! Java spec sez that we always have at least
@@ -485,7 +485,7 @@ class FloatingDozenal {
                 }
                 // else fall through.
             }
-            digits[i] = Characters.getCharacter(q + 1);
+            digits[i] = Characters.getCharacter(q - 47); // 0 is 48 in ascii so its really q+1
             decimalDigitsRoundedUp = true;
         }
 
@@ -511,16 +511,16 @@ class FloatingDozenal {
          * Then estimate that:
          * log12(d2) ~=~ 0.2256773151*d2 - 0.1753448096
          * and so we can estimate:
-         * log12(d) ~=~ log12(d2) + exp * log12(2)
+         * log12(d) ~=~ log12(d2) + binExp * log12(2)
          *
          * @param mantissa - double float mantissa
-         * @param exp      - binary exponent
+         * @param binExp   - binary exponent
          * @return - the floor of d (represents the doz exponent)
          */
-        private int estimateDozExp(long mantissa, int exp) {
+        private int estimateDozExp(long mantissa, int binExp) {
             double d2 = Double.longBitsToDouble(EXP_ONE | (mantissa & MANTISSA_MASK));
-            // turns the mantissa into a float with the exponent of one.
-            double d = 0.2256773151 * d2 - 0.1753448096 + (double) exp * 0.2789429457;
+            // turns the mantissa into a double with the exponent of one.
+            double d = 0.2256773151 * d2 - 0.1753448096 + (double) binExp * 0.2789429457;
             long dBits = Double.doubleToRawLongBits(d);
             int exponent = (int) ((dBits & EXP_MASK) >> EXP_SHIFT) - EXP_BIAS;
             boolean isNegative = (dBits & SIGN_MASK) != 0;
@@ -541,25 +541,23 @@ class FloatingDozenal {
                 result[0] = '-';
                 i = 1;
             }
-            if (dozExponent > 0 && dozExponent < 8) {
-                int charLength = Math.min(nDigits, dozExponent);
-                System.arraycopy(digits, firstDigitIndex, result, i, charLength);
-                i += charLength;
-                if (charLength == dozExponent) {
+            if (dozExponent > 0 && dozExponent < 9) {
+                if (dozExponent == nDigits) {
+                    System.arraycopy(digits, firstDigitIndex, result, i, dozExponent);
+                    i += dozExponent;
                     Arrays.fill(result, i, i, '0');
-                } else if (charLength < dozExponent) {
-                    charLength = dozExponent - charLength;
-                    Arrays.fill(result, i, i + charLength, '0');
-                    i += charLength;
-                } else {
+                } else if (dozExponent > nDigits) {
+                    System.arraycopy(digits, firstDigitIndex, result, i, nDigits);
+                    i += nDigits;
+                    Arrays.fill(result, i, i + dozExponent - nDigits, '0');
+                    i += dozExponent - nDigits;
+                } else { // nDigits > dozExponent
+                    System.arraycopy(digits, firstDigitIndex, result, i, dozExponent);
+                    i += dozExponent;
                     result[i++] = '.';
-                    if (charLength < nDigits) {
-                        int t = nDigits - charLength;
-                        System.arraycopy(digits, firstDigitIndex + charLength, result, i, t);
-                        i += t;
-                    } else {
-                        result[i++] = '0';
-                    }
+                    int t = nDigits - dozExponent;
+                    System.arraycopy(digits, firstDigitIndex + dozExponent, result, i, t);
+                    i += t;
                 }
             } else if (dozExponent <= 0 && dozExponent > -3) {
                 result[i++] = '0';
@@ -579,7 +577,7 @@ class FloatingDozenal {
                 } else {
                     result[i++] = '0';
                 }
-                result[i++] = 'E';
+                result[i++] = 'e';
                 int e;
                 if (dozExponent <= 0) {
                     result[i++] = '-';
@@ -589,15 +587,15 @@ class FloatingDozenal {
                 }
                 // dozExponent has 1, 2, or 3, digits
                 if (e <= 11) {
-                    result[i++] = (char) (e + '0');
+                    result[i++] = Characters.getCharacter(e);
                 } else if (e <= 143) {
-                    result[i++] = (char) (e / 12 + '0');
-                    result[i++] = (char) (e % 12 + '0');
+                    result[i++] = Characters.getCharacter(e / 12);
+                    result[i++] = Characters.getCharacter(e % 12);
                 } else {
-                    result[i++] = (char) (e / 144 + '0');
+                    result[i++] = Characters.getCharacter(e / 144);
                     e %= 144;
-                    result[i++] = (char) (e / 12 + '0');
-                    result[i++] = (char) (e % 12 + '0');
+                    result[i++] = Characters.getCharacter(e / 12);
+                    result[i++] = Characters.getCharacter(e % 12);
                 }
             }
             return i;
