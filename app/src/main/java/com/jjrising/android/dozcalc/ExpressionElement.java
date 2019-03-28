@@ -29,6 +29,26 @@ class Numeral extends ExpressionElement {
         this.value = value;
     }
 
+    double getValue() {
+        return value;
+    }
+
+    void add(Numeral a) {
+        this.value += a.getValue();
+    }
+
+    void subtract(Numeral a) {
+        this.value -= a.getValue();
+    }
+
+    void multiply(Numeral a) {
+        this.value *= a.getValue();
+    }
+
+    void divide(Numeral a) {
+        this.value /= a.getValue();
+    }
+
     /**
      * Returns a string showing the value of the Numeral in dozenal.
      * <p>
@@ -117,5 +137,17 @@ class Operator extends ExpressionElement {
                 associativity = LEFT;
                 break;
         }
+    }
+
+    int op() {
+        return value;
+    }
+
+    int precedence() {
+        return precedence;
+    }
+
+    Boolean associativity() {
+        return associativity;
     }
 }
