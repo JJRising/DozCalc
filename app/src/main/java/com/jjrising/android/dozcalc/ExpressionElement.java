@@ -73,7 +73,7 @@ class Numeral extends ExpressionElement {
 
         FloatingDozenal.BinaryToDozBuffer buf = new FloatingDozenal.BinaryToDozBuffer();
         buf.setSign(isNegative);
-        buf.doubleToDoz(exp, mantissa, numberOfSignificantBits);
+        boolean exact = buf.doubleToDoz(exp, mantissa, numberOfSignificantBits);
         return buf.toJavaFormatString();
     }
 }
