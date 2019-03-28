@@ -33,10 +33,10 @@ class Numeral extends ExpressionElement {
 
     Numeral(ArrayList<Integer> builder) {
         super(NUMBER);
-        boolean hasDot = builder.contains(Characters.DOT);
+        boolean hasDot = builder.contains(Characters.getInt("."));
         int dotIndex;
         if (hasDot)
-            dotIndex = builder.indexOf(Characters.DOT);
+            dotIndex = builder.indexOf(Characters.getInt("."));
         else
             dotIndex = builder.size();
         for (int i = 0; i < dotIndex; i++) {

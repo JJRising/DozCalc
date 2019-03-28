@@ -4,38 +4,41 @@ package com.jjrising.android.dozcalc;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
-public class inputString {
+class InputString {
     private ArrayList<Integer> list;
 
-    inputString() {
+    InputString() {
         list = new ArrayList<>();
     }
 
-    inputString(String str) {
+    InputString(String str) {
         list = new ArrayList<>();
         for (char ch : str.toCharArray()) {
-            if (ch >= '0' && ch <= '9') {
-                list.add(ch - 48);
-            } else if (ch == 'X') {
-                list.add(10);
-            } else if (ch == 'E') {
-                list.add(11);
-            } else if (ch == '.') {
-                list.add(Characters.DOT);
-            } else if (ch == '+') {
-                list.add(Characters.OPERATOR_ADD);
-            } else if (ch == '-') {
-                list.add(Characters.OPERATOR_SUBTRACT);
-            } else if (ch == '*') {
-                list.add(Characters.OPERATOR_MULTIPLY);
-            } else if (ch == '/') {
-                list.add(Characters.OPERATOR_DIVIDE);
-            }
+            list.add(Characters.getInt(Character.toString(ch)));
         }
     }
 
     void add(int in) {
         list.add(in);
+    }
+
+    void back() {
+        if (list.size() != 0) {
+            list.remove(list.size() - 1);
+        }
+    }
+
+    void clear() {
+        list.clear();
+    }
+
+    String getText() {
+        StringBuilder builder = new StringBuilder();
+        int length = list.size();
+        for (int i = 0; i < length; i++) {
+            builder.append(Characters.getCharacter(list.get(i)));
+        }
+        return builder.toString();
     }
 
     Expression createExpression() {

@@ -1,32 +1,42 @@
 package com.jjrising.android.dozcalc;
 
+import com.google.common.collect.ImmutableBiMap;
+
 class Characters {
-    static final int DOT = 12;
     static final int OPERATOR_LOWER_LIMIT = 20;
-    static final int OPERATOR_ADD = 20;
-    static final int OPERATOR_SUBTRACT = 21;
-    static final int OPERATOR_MULTIPLY = 22;
-    static final int OPERATOR_DIVIDE = 23;
+    static final int OPERATOR_ADD = 21;
+    static final int OPERATOR_SUBTRACT = 22;
+    static final int OPERATOR_MULTIPLY = 23;
+    static final int OPERATOR_DIVIDE = 24;
+
+    private static final ImmutableBiMap<Integer, String> charMap
+            = new ImmutableBiMap.Builder<Integer, String>()
+            .put(0, "0")
+            .put(1, "1")
+            .put(2, "2")
+            .put(3, "3")
+            .put(4, "4")
+            .put(5, "5")
+            .put(6, "6")
+            .put(7, "7")
+            .put(8, "8")
+            .put(9, "9")
+            .put(10, "X")
+            .put(11, "E")
+            .put(12, ".")
+            .put(20, "=")
+            .put(21, "+")
+            .put(22, "-")
+            .put(23, "*")
+            .put(24, "/")
+            .put(25, "^")
+            .build();
 
     static char getCharacter(int num) {
-        if (num < 0)
-            return '~';
-        if (num < 10)
-            return (char) (num + '0');
-        else if (num == 10)
-            return 'X';
-        else if (num == 11)
-            return 'E';
-        else if (num == DOT)
-            return '.';
-        else if (num == OPERATOR_ADD)
-            return '+';
-        else if (num == OPERATOR_SUBTRACT)
-            return '-';
-        else if (num == OPERATOR_MULTIPLY)
-            return '*';
-        else if (num == OPERATOR_DIVIDE)
-            return '/';
-        return '`';
+        return charMap.get(num).charAt(0);
+    }
+
+    static int getInt(String str) {
+        return charMap.inverse().get(str);
     }
 }

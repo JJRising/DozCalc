@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">DozCalc</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="string_0">0</string>
+    <string name="string_1">1</string>
+    <string name="string_2">2</string>
+    <string name="string_5">5</string>
+    <string name="string_4">4</string>
+    <string name="string_3">3</string>
+    <string name="string_8">8</string>
+    <string name="string_7">7</string>
+    <string name="string_6">6</string>
+    <string name="string_el">E</string>
+    <string name="string_dec">X</string>
+    <string name="string_9">9</string>
+    <string name="string_dot">.</string>
+    <string name="string_equals">=</string>
+    <string name="string_backspace"><![CDATA[<-]]></string>
+    <string name="string_exponent">^</string>
+    <string name="string_add">+</string>
+    <string name="string_subtract">-</string>
+    <string name="string_divide">/</string>
+    <string name="string_multiply">*</string>
 </resources>
