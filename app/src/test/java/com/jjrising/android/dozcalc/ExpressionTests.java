@@ -43,4 +43,15 @@ public class ExpressionTests {
         ex.add(new Numeral(1));
         assertEquals(1, ex.calc().getValue(), 0);
     }
+
+    @Test
+    public void inputExpressionTest() {
+        inputString in = new inputString("23+5");
+        Expression express = in.createExpression();
+        assertEquals("28", express.calc().toString());
+
+        inputString in2 = new inputString("5.6-2*2");
+        Expression express2 = in2.createExpression();
+        assertEquals("1.6", express2.calc().toString());
+    }
 }

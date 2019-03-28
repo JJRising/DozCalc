@@ -2,6 +2,8 @@ package com.jjrising.android.dozcalc;
 
 import android.support.annotation.NonNull;
 
+import java.util.ArrayList;
+
 class ExpressionElement {
     static final int NUMBER = 0;
     static final int OPERATOR = 1;
@@ -27,6 +29,28 @@ class Numeral extends ExpressionElement {
     Numeral(double value) {
         super(NUMBER);
         this.value = value;
+    }
+
+    Numeral(ArrayList<Integer> builder) {
+        super(NUMBER);
+        boolean hasDot = builder.contains(Characters.DOT);
+        int dotIndex;
+        if (hasDot)
+            dotIndex = builder.indexOf(Characters.DOT);
+        else
+            dotIndex = builder.size();
+        for (int i = 0; i < dotIndex; i++) {
+            int addValue = builder.get(dotIndex - i - 1);
+            for (int j = 0; j < i; j++)
+                addValue *= 12;
+            value += addValue;
+        }
+        for (int i = dotIndex + 1; i < builder.size(); i++) {
+            double addValue = builder.get(i);
+            for (int j = 0; j < i - dotIndex; j++)
+                addValue /= 12;
+            value += addValue;
+        }
     }
 
     double getValue() {
@@ -116,22 +140,22 @@ class Operator extends ExpressionElement {
     Operator(int op) {
         super(OPERATOR);
         switch (op) {
-            case ADD:
+            case Characters.OPERATOR_ADD:
                 value = ADD;
                 precedence = 2;
                 associativity = LEFT;
                 break;
-            case SUBTRACT:
+            case Characters.OPERATOR_SUBTRACT:
                 value = SUBTRACT;
                 precedence = 2;
                 associativity = LEFT;
                 break;
-            case MULTIPLY:
+            case Characters.OPERATOR_MULTIPLY:
                 value = MULTIPLY;
                 precedence = 3;
                 associativity = LEFT;
                 break;
-            case DIVIDE:
+            case Characters.OPERATOR_DIVIDE:
                 value = DIVIDE;
                 precedence = 4;
                 associativity = LEFT;

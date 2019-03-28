@@ -3,7 +3,7 @@ package com.jjrising.android.dozcalc;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
-public class Expression {
+class Expression {
     private ArrayList<ExpressionElement> express;
 
     Expression() {
