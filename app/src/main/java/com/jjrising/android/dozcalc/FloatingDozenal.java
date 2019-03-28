@@ -98,34 +98,6 @@ class FloatingDozenal {
                 61,
                 62
         };
-        // Approximately ceil( log2( long6pow[i]))
-        private static final int[] N_6_BITS = {
-                0,
-                3,
-                5,
-                8,
-                11,
-                13,
-                16,
-                19,
-                21,
-                24,
-                26,
-                29,
-                32,
-                34,
-                37,
-                39,
-                42,
-                44,
-                47,
-                50,
-                52,
-                55,
-                57,
-                60,
-                63
-        };
         //TODO: How were these calculated?
         private static int[] insignificantDigitsNumber = {
                 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3,
@@ -268,17 +240,17 @@ class FloatingDozenal {
             //          = 2^(numberOfFractionalBits + max(0, dozExp)) * 6^max(0, dozExp)
 
             int dozExp = estimateDozExp(mantissa, binExp);
-            int B2, B6;
-            int S2, S6;
-            int M2, M6;
+            int B2, B3;
+            int S2, S3;
+            int M2, M3;
 
-            B6 = Math.max(0, -dozExp);
-            B2 = B6 + fractionalBits + binExp;
+            B3 = Math.max(0, -dozExp);
+            B2 = 2 * B3 + fractionalBits + binExp;
 
-            S6 = Math.max(0, dozExp);
-            S2 = S6 + fractionalBits;
+            S3 = Math.max(0, dozExp);
+            S2 = 2 * S3 + fractionalBits;
 
-            M6 = B6;
+            M3 = B3;
             M2 = B2 - numOfSignificantBits;
             //M2 = B2;
 
@@ -310,15 +282,15 @@ class FloatingDozenal {
             long lowDigitDifference;
             int q;
 
-            int BBits = numOfMantissaBits + B2 + ((B6 < N_6_BITS.length) ? N_6_BITS[B6] : B6 * 3);
+            int BBits = numOfMantissaBits + B2 + ((B3 < N_3_BITS.length) ? N_3_BITS[B3] : B3 * 3);
 
-            int twelveSBits = S2 + 1 + ((S6 + 1 < N_6_BITS.length) ? N_6_BITS[S6 + 1] : (S6 + 1) * 3);
+            int twelveSBits = S2 + 1 + ((S3 + 1 < N_3_BITS.length) ? N_3_BITS[S3 + 1] : (S3 + 1) * 3);
             if (BBits < 64 && twelveSBits < 64) {
                 if (BBits < 32 && twelveSBits < 32) {
                     // Can use ints
-                    int b = ((int) mantissa * FDBigInteger.SMALL_6_POW[B6]) << B2;
-                    int s = FDBigInteger.SMALL_6_POW[S6] << S2;
-                    int m = FDBigInteger.SMALL_6_POW[M6] << M2;
+                    int b = ((int) mantissa * FDBigInteger.SMALL_3_POW[B3]) << B2;
+                    int s = FDBigInteger.SMALL_3_POW[S3] << S2;
+                    int m = FDBigInteger.SMALL_3_POW[M3] << M2;
                     int twelves = s * 12;
 
                     //
@@ -361,9 +333,9 @@ class FloatingDozenal {
                     exactDecimalConversion = (b == 0);
                 } else {
                     // Can use longs
-                    long b = (mantissa * FDBigInteger.LONG_6_POW[B6]) << B2;
-                    long s = FDBigInteger.LONG_6_POW[S6] << S2;
-                    long m = FDBigInteger.LONG_6_POW[M6] << M2;
+                    long b = (mantissa * FDBigInteger.LONG_3_POW[B3]) << B2;
+                    long s = FDBigInteger.LONG_3_POW[S3] << S2;
+                    long m = FDBigInteger.LONG_3_POW[M3] << M2;
                     long twelves = s * 12L;
 
                     //
@@ -406,13 +378,13 @@ class FloatingDozenal {
                     exactDecimalConversion = (b == 0);
                 }
             } else {
-                FDBigInteger SVal = FDBigInteger.valueOfPow62(S6, S2);
+                FDBigInteger SVal = FDBigInteger.valueOfPow32(S3, S2);
                 int shiftBias = SVal.getNormalizationBias();
                 SVal = SVal.leftShift(shiftBias);
 
-                FDBigInteger BVal = FDBigInteger.valueOfMulPow62(mantissa, B6, B2 + shiftBias);
-                FDBigInteger MVal = FDBigInteger.valueOfPow62(M6 + 1, M2 + shiftBias + 1);
-                FDBigInteger twelveSVal = FDBigInteger.valueOfPow62(S6 + 1, S2 + shiftBias + 1); //SVal.mult( 12 );
+                FDBigInteger BVal = FDBigInteger.valueOfMulPow32(mantissa, B3, B2 + shiftBias);
+                FDBigInteger MVal = FDBigInteger.valueOfPow32(M3 + 1, M2 + shiftBias + 1);
+                FDBigInteger twelveSVal = FDBigInteger.valueOfPow32(S3 + 1, S2 + shiftBias + 1); //SVal.mult( 12 );
 
                 q = BVal.quoRemIteration(SVal);
                 low = (BVal.cmp(MVal) < 0);

@@ -42,7 +42,7 @@ import java.util.Arrays;
 /**
  * A simple big integer package specifically for floating point base conversion.
  */
-public class FDBigInteger {
+class FDBigInteger {
 
     static final int[] SMALL_3_POW = {
             1,
@@ -127,88 +127,43 @@ public class FDBigInteger {
                     * 3 * 3 * 3 * 3 * 3 * 3 * 3 * 3 * 3 * 3 * 3 * 3 * 3 * 3 * 3 * 3 * 3
     };
 
-    static final int[] SMALL_6_POW = {
-            1,
-            6,
-            6 * 6,
-            6 * 6 * 6,
-            6 * 6 * 6 * 6,
-            6 * 6 * 6 * 6 * 6,
-            6 * 6 * 6 * 6 * 6 * 6,
-            6 * 6 * 6 * 6 * 6 * 6 * 6,
-            6 * 6 * 6 * 6 * 6 * 6 * 6 * 6,
-            6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6,
-            6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6,
-            6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6
-    };
-
-    static final long[] LONG_6_POW = {
-            1L,
-            6L,
-            6L * 6,
-            6L * 6 * 6,
-            6L * 6 * 6 * 6,
-            6L * 6 * 6 * 6 * 6,
-            6L * 6 * 6 * 6 * 6 * 6,
-            6L * 6 * 6 * 6 * 6 * 6 * 6,
-            6L * 6 * 6 * 6 * 6 * 6 * 6 * 6,
-            6L * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6,
-            6L * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6,
-            6L * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6,
-            6L * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6,
-            6L * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6,
-            6L * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6,
-            6L * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6,
-            6L * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6,
-            6L * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6,
-            6L * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6,
-            6L * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6,
-            6L * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6,
-            6L * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6,
-            6L * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6,
-            6L * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6,
-            6L * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6 * 6,
-    };
     // Zero as an FDBigInteger.
     static final FDBigInteger ZERO = new FDBigInteger(new int[0], 0);
-    // Maximum size of cache of powers of 6 as FDBigIntegers.
-    private static final int MAX_SIX_POW = 340;
+    // Maximum size of cache of powers of 3 as FDBigIntegers.
+    private static final int MAX_THREE_POW = 340;
     // Cache of big powers of 5 as FDBigIntegers.
-    private static final FDBigInteger POW_6_CACHE[];
-    // Constant for casting an int to a long via bitwise AND.
-    private final static long LONG_MASK = 0xffffffffL;
-
-    // Initialize FDBigInteger cache of powers of 5.
-    static {
-        POW_6_CACHE = new FDBigInteger[MAX_SIX_POW];
-        int i = 0;
-        while (i < SMALL_6_POW.length) {
-            FDBigInteger pow6 = new FDBigInteger(new int[]{SMALL_6_POW[i]}, 0);
-            pow6.makeImmutable();
-            POW_6_CACHE[i] = pow6;
-            i++;
-        }
-        FDBigInteger prev = POW_6_CACHE[i - 1];
-        while (i < MAX_SIX_POW) {
-            POW_6_CACHE[i] = prev = prev.mult(6);
-            prev.makeImmutable();
-            i++;
-        }
-    }
+    private static final FDBigInteger POW_3_CACHE[];
 
     // Ensure ZERO is immutable.
     static {
         ZERO.makeImmutable();
     }
+    // Constant for casting an int to a long via bitwise AND.
+    private final static long LONG_MASK = 0xffffffffL;
 
-    //@ spec_public non_null;
+    // Initialize FDBigInteger cache of powers of 3.
+    static {
+        POW_3_CACHE = new FDBigInteger[MAX_THREE_POW];
+        int i = 0;
+        while (i < SMALL_3_POW.length) {
+            FDBigInteger pow3 = new FDBigInteger(new int[]{SMALL_3_POW[i]}, 0);
+            pow3.makeImmutable();
+            POW_3_CACHE[i] = pow3;
+            i++;
+        }
+        FDBigInteger prev = POW_3_CACHE[i - 1];
+        while (i < MAX_THREE_POW) {
+            POW_3_CACHE[i] = prev = prev.mult(3);
+            prev.makeImmutable();
+            i++;
+        }
+    }
+
+
     private int data[];  // value: data[0] is least significant
-    //@ spec_public;
     private int offset;  // number of least significant zero padding ints
-    //@ spec_public;
     private int nWords;  // data[nWords-1]!=0, all values above are zero
     // if nWords==0 -> this FDBigInteger is zero
-    //@ spec_public;
     private boolean isImmutable = false;
 
     /**
@@ -231,57 +186,57 @@ public class FDBigInteger {
 
     /**
      * Returns an <code>FDBigInteger</code> with the numerical value
-     * <code>6<sup>p6</sup> * 2<sup>p2</sup></code>.
+     * <code>3<sup>p3</sup> * 2<sup>p2</sup></code>.
      *
-     * @param p6 The exponent of the power-of-six factor.
+     * @param p3 The exponent of the power-of-six factor.
      * @param p2 The exponent of the power-of-two factor.
-     * @return <code>5<sup>p6</sup> * 2<sup>p2</sup></code>
+     * @return <code>3<sup>p3</sup> * 2<sup>p2</sup></code>
      */
-    static FDBigInteger valueOfPow62(int p6, int p2) {
-        if (p6 != 0) {
+    static FDBigInteger valueOfPow32(int p3, int p2) {
+        if (p3 == 0) {
+            return valueOfPow2(p2);
+        } else {
             if (p2 == 0) {
-                return big6pow(p6);
-            } else if (p6 < SMALL_6_POW.length) {
-                int pow6 = SMALL_6_POW[p6];
+                return big3pow(p3);
+            } else if (p3 < SMALL_3_POW.length) {
+                int pow3 = SMALL_3_POW[p3];
                 int wordcount = p2 >> 5;
                 int bitcount = p2 & 0x1f;
                 if (bitcount == 0) {
-                    return new FDBigInteger(new int[]{pow6}, wordcount);
+                    return new FDBigInteger(new int[]{pow3}, wordcount);
                 } else {
                     return new FDBigInteger(new int[]{
-                            pow6 << bitcount,
-                            pow6 >>> (32 - bitcount)
+                            pow3 << bitcount,
+                            pow3 >>> (32 - bitcount)
                     }, wordcount);
                 }
             } else {
-                return big6pow(p6).leftShift(p2);
+                return big3pow(p3).leftShift(p2);
             }
-        } else {
-            return valueOfPow2(p2);
         }
     }
 
     /**
      * Returns an <code>FDBigInteger</code> with the numerical value
-     * <code>value * 6<sup>p6</sup> * 2<sup>p2</sup></code>.
+     * <code>value * 3<sup>p3</sup> * 2<sup>p2</sup></code>.
      *
      * @param value The constant factor.
-     * @param p6    The exponent of the power-of-six factor.
+     * @param p3    The exponent of the power-of-six factor.
      * @param p2    The exponent of the power-of-two factor.
-     * @return <code>value * 5<sup>p6</sup> * 2<sup>p2</sup></code>
+     * @return <code>value * 5<sup>p3</sup> * 2<sup>p2</sup></code>
      */
-    static FDBigInteger valueOfMulPow62(long value, int p6, int p2) {
+    static FDBigInteger valueOfMulPow32(long value, int p3, int p2) {
         int v0 = (int) value;
         int v1 = (int) (value >>> 32);
         int wordcount = p2 >> 5;
         int bitcount = p2 & 0x1f;
-        if (p6 != 0) {
-            if (p6 < SMALL_6_POW.length) {
-                long pow6 = SMALL_6_POW[p6] & LONG_MASK;
-                long carry = (v0 & LONG_MASK) * pow6;
+        if (p3 != 0) {
+            if (p3 < SMALL_3_POW.length) {
+                long pow3 = SMALL_3_POW[p3] & LONG_MASK;
+                long carry = (v0 & LONG_MASK) * pow3;
                 v0 = (int) carry;
                 carry >>>= 32;
-                carry = (v1 & LONG_MASK) * pow6 + carry;
+                carry = (v1 & LONG_MASK) * pow3 + carry;
                 v1 = (int) carry;
                 int v2 = (int) (carry >>> 32);
                 if (bitcount == 0) {
@@ -295,16 +250,16 @@ public class FDBigInteger {
                     }, wordcount);
                 }
             } else {
-                FDBigInteger pow6 = big6pow(p6);
+                FDBigInteger pow3 = big3pow(p3);
                 int[] r;
                 if (v1 == 0) {
-                    r = new int[pow6.nWords + 1 + ((p2 != 0) ? 1 : 0)];
-                    mult(pow6.data, pow6.nWords, v0, r);
+                    r = new int[pow3.nWords + 1 + ((p2 != 0) ? 1 : 0)];
+                    mult(pow3.data, pow3.nWords, v0, r);
                 } else {
-                    r = new int[pow6.nWords + 2 + ((p2 != 0) ? 1 : 0)];
-                    mult(pow6.data, pow6.nWords, v0, v1, r);
+                    r = new int[pow3.nWords + 2 + ((p2 != 0) ? 1 : 0)];
+                    mult(pow3.data, pow3.nWords, v0, v1, r);
                 }
-                return (new FDBigInteger(r, pow6.offset)).leftShift(p2);
+                return (new FDBigInteger(r, pow3.offset)).leftShift(p2);
             }
         } else if (p2 != 0) {
             if (bitcount == 0) {
@@ -464,42 +419,29 @@ public class FDBigInteger {
     }
 
     /**
-     * Computes <code>5</code> raised to a given power.
+     * Computes <code>3</code> raised to a given power.
      *
-     * @param p The exponent of 5.
-     * @return <code>5<sup>p</sup></code>.
+     * @param p The exponent of 3.
+     * @return <code>3<sup>p</sup></code>.
      */
-    private static FDBigInteger big6pow(int p) {
-        if (p < MAX_SIX_POW) {
-            return POW_6_CACHE[p];
-        }
-        return big5powRec(p);
-    }
-
-    /**
-     * Computes <code>5</code> raised to a given power.
-     *
-     * @param p The exponent of 5.
-     * @return <code>5<sup>p</sup></code>.
-     */
-    private static FDBigInteger big5powRec(int p) {
-        if (p < MAX_SIX_POW) {
-            return POW_6_CACHE[p];
+    private static FDBigInteger big3pow(int p) {
+        if (p < MAX_THREE_POW) {
+            return POW_3_CACHE[p];
         }
         // construct the value.
         // recursively.
         int q, r;
-        // in order to compute 5^p,
-        // compute its square root, 5^(p/2) and square.
-        // or, let q = p / 2, r = p -q, then
-        // 5^p = 5^(q+r) = 5^q * 5^r
+        // in order to compute 3^p,
+        // compute its square root, 3^(p/2) and square.
+        // or, let q = p / 2, r = p - q, then
+        // 3^p = 3^(q+r) = 3^q * 3^r
         q = p >> 1;
         r = p - q;
-        FDBigInteger bigQ = big5powRec(q);
-        if (r < SMALL_6_POW.length) {
-            return bigQ.mult(SMALL_6_POW[r]);
+        FDBigInteger bigQ = big3pow(q);
+        if (r < SMALL_3_POW.length) {
+            return bigQ.mult(SMALL_3_POW[r]);
         } else {
-            return bigQ.mult(big5powRec(r));
+            return bigQ.mult(big3pow(r));
         }
     }
 
@@ -730,147 +672,6 @@ public class FDBigInteger {
     }
 
     /**
-     * Multiplies this <code>FDBigInteger</code> by
-     * <code>5<sup>p6</sup> * 2<sup>p2</sup></code>. The operation will be
-     * performed in place if possible, otherwise a new <code>FDBigInteger</code>
-     * will be returned.
-     *
-     * @param p6 The exponent of the power-of-six factor.
-     * @param p2 The exponent of the power-of-two factor.
-     * @return FDBigInteger The Large integer build of the base 6 and base 2 components
-     */
-    public FDBigInteger multByPow62(int p6, int p2) {
-        if (this.nWords == 0) {
-            return this;
-        }
-        FDBigInteger res = this;
-        if (p6 != 0) {
-            int[] r;
-            int extraSize = (p2 != 0) ? 1 : 0;
-            if (p6 < SMALL_6_POW.length) {
-                r = new int[this.nWords + 1 + extraSize];
-                mult(this.data, this.nWords, SMALL_6_POW[p6], r);
-                res = new FDBigInteger(r, this.offset);
-            } else {
-                FDBigInteger pow6 = big6pow(p6);
-                r = new int[this.nWords + pow6.size() + extraSize];
-                mult(this.data, this.nWords, pow6.data, pow6.nWords, r);
-                res = new FDBigInteger(r, this.offset + pow6.offset);
-            }
-        }
-        return res.leftShift(p2);
-    }
-
-    /**
-     * Subtracts the supplied <code>FDBigInteger</code> subtrahend from this
-     * <code>FDBigInteger</code>. Assert that the result is positive.
-     * If the subtrahend is immutable, store the result in this(minuend).
-     * If this(minuend) is immutable a new <code>FDBigInteger</code> is created.
-     *
-     * @param subtrahend The <code>FDBigInteger</code> to be subtracted.
-     * @return This <code>FDBigInteger</code> less the subtrahend.
-     */
-    public FDBigInteger leftInplaceSub(FDBigInteger subtrahend) {
-        FDBigInteger minuend;
-        if (this.isImmutable) {
-            minuend = new FDBigInteger(this.data.clone(), this.offset);
-        } else {
-            minuend = this;
-        }
-        int offsetDiff = subtrahend.offset - minuend.offset;
-        int[] sData = subtrahend.data;
-        int[] mData = minuend.data;
-        int subLen = subtrahend.nWords;
-        int minLen = minuend.nWords;
-        if (offsetDiff < 0) {
-            // need to expand minuend
-            int rLen = minLen - offsetDiff;
-            if (rLen < mData.length) {
-                System.arraycopy(mData, 0, mData, -offsetDiff, minLen);
-                Arrays.fill(mData, 0, -offsetDiff, 0);
-            } else {
-                int[] r = new int[rLen];
-                System.arraycopy(mData, 0, r, -offsetDiff, minLen);
-                minuend.data = mData = r;
-            }
-            minuend.offset = subtrahend.offset;
-            minuend.nWords = minLen = rLen;
-            offsetDiff = 0;
-        }
-        long borrow = 0L;
-        int mIndex = offsetDiff;
-        for (int sIndex = 0; sIndex < subLen && mIndex < minLen; sIndex++, mIndex++) {
-            long diff = (mData[mIndex] & LONG_MASK) - (sData[sIndex] & LONG_MASK) + borrow;
-            mData[mIndex] = (int) diff;
-            borrow = diff >> 32; // signed shift
-        }
-        for (; borrow != 0 && mIndex < minLen; mIndex++) {
-            long diff = (mData[mIndex] & LONG_MASK) + borrow;
-            mData[mIndex] = (int) diff;
-            borrow = diff >> 32; // signed shift
-        }
-        // result should be positive
-        minuend.trimLeadingZeros();
-        return minuend;
-    }
-
-    /**
-     * Subtracts the supplied <code>FDBigInteger</code> subtrahend from this
-     * <code>FDBigInteger</code>. Assert that the result is positive.
-     * If the this(minuend) is immutable, store the result in subtrahend.
-     * If subtrahend is immutable a new <code>FDBigInteger</code> is created.
-     *
-     * @param subtrahend The <code>FDBigInteger</code> to be subtracted.
-     * @return This <code>FDBigInteger</code> less the subtrahend.
-     */
-    public FDBigInteger rightInplaceSub(FDBigInteger subtrahend) {
-        FDBigInteger minuend = this;
-        if (subtrahend.isImmutable) {
-            subtrahend = new FDBigInteger(subtrahend.data.clone(), subtrahend.offset);
-        }
-        int offsetDiff = minuend.offset - subtrahend.offset;
-        int[] sData = subtrahend.data;
-        int[] mData = minuend.data;
-        int subLen = subtrahend.nWords;
-        int minLen = minuend.nWords;
-        if (offsetDiff < 0) {
-            if (minLen < sData.length) {
-                System.arraycopy(sData, 0, sData, -offsetDiff, subLen);
-                Arrays.fill(sData, 0, -offsetDiff, 0);
-            } else {
-                int[] r = new int[minLen];
-                System.arraycopy(sData, 0, r, -offsetDiff, subLen);
-                subtrahend.data = sData = r;
-            }
-            subtrahend.offset = minuend.offset;
-            offsetDiff = 0;
-        } else {
-            int rLen = minLen + offsetDiff;
-            if (rLen >= sData.length) {
-                subtrahend.data = sData = Arrays.copyOf(sData, rLen);
-            }
-        }
-        int sIndex = 0;
-        long borrow = 0L;
-        for (; sIndex < offsetDiff; sIndex++) {
-            long diff = 0L - (sData[sIndex] & LONG_MASK) + borrow;
-            sData[sIndex] = (int) diff;
-            borrow = diff >> 32; // signed shift
-        }
-        for (int mIndex = 0; mIndex < minLen; sIndex++, mIndex++) {
-            //@ assert sIndex == offsetDiff + mIndex;
-            long diff = (mData[mIndex] & LONG_MASK) - (sData[sIndex] & LONG_MASK) + borrow;
-            sData[sIndex] = (int) diff;
-            borrow = diff >> 32; // signed shift
-        }
-        // result should be positive
-        subtrahend.nWords = sIndex;
-        subtrahend.trimLeadingZeros();
-        return subtrahend;
-
-    }
-
-    /**
      * Compares the parameter with this <code>FDBigInteger</code>. Returns an
      * integer accordingly as:
      * <pre>
@@ -907,41 +708,6 @@ public class FDBigInteger {
             return -checkZeroTail(other.data, bLen);
         }
         return 0;
-    }
-
-    /**
-     * Compares this <code>FDBigInteger</code> with
-     * <code>6<sup>p6</sup> * 2<sup>p2</sup></code>.
-     * Returns an integer accordingly as:
-     * <pre>
-     * >0: this > other
-     *  0: this == other
-     * <0: this < other
-     * </pre>
-     *
-     * @param p6 The exponent of the power-of-six factor.
-     * @param p2 The exponent of the power-of-two factor.
-     * @return A negative value, zero, or a positive value according to the
-     * result of the comparison.
-     */
-    public int cmpPow62(int p6, int p2) {
-        if (p6 == 0) {
-            int wordcount = p2 >> 5;
-            int bitcount = p2 & 0x1f;
-            int size = this.nWords + this.offset;
-            if (size > wordcount + 1) {
-                return 1;
-            } else if (size < wordcount + 1) {
-                return -1;
-            }
-            int a = this.data[this.nWords - 1];
-            int b = 1 << bitcount;
-            if (a != b) {
-                return ((a & LONG_MASK) < (b & LONG_MASK)) ? -1 : 1;
-            }
-            return checkZeroTail(this.data, this.nWords - 1);
-        }
-        return this.cmp(big6pow(p6).leftShift(p2));
     }
 
     /**
@@ -1108,36 +874,6 @@ public class FDBigInteger {
         }
         r[bigLen] = (int) carry;
         return new FDBigInteger(r, 0);
-    }
-
-    // Fails assertion for negative exponent.
-
-    /**
-     * Multiplies a <code>FDBigInteger</code> by an int and adds another int. The
-     * result is computed in place. This method is intended only to be invoked
-     * from
-     * <code>
-     * FDBigInteger(long lValue, char[] digits, int kDigits, int nDigits)
-     * </code>.
-     *
-     * @param iv     The factor by which to multiply this <code>FDBigInteger</code>.
-     * @param addend The value to add to the product of this
-     *               <code>FDBigInteger</code> and <code>iv</code>.
-     */
-    private void multAddMe(int iv, int addend) {
-        long v = iv & LONG_MASK;
-        // unroll 0th iteration, doing addition.
-        long p = v * (data[0] & LONG_MASK) + (addend & LONG_MASK);
-        data[0] = (int) p;
-        p >>>= 32;
-        for (int i = 1; i < nWords; i++) {
-            p += v * (data[i] & LONG_MASK);
-            data[i] = (int) p;
-            p >>>= 32;
-        }
-        if (p != 0L) {
-            data[nWords++] = (int) p; // will fail noisily if illegal!
-        }
     }
 
     // slow path

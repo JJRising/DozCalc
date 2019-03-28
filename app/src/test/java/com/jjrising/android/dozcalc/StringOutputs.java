@@ -83,12 +83,17 @@ public class StringOutputs {
         assertEquals("1.41981E88eE", tenToTheTwelve.toString());
         Numeral tenToTheTwenty = new Numeral(100000000000000000000.0);
         assertEquals("3.90X66958X9465e16", tenToTheTwenty.toString());
+        long veryBigNumberLong = 0x7FE0_0000_0000_0000L;
+        Numeral veryBigNumber = new Numeral(Double.longBitsToDouble(veryBigNumberLong));
+        assertEquals("2.5e1E9", veryBigNumber.toString());
     }
 
     @Test
     public void hardFractions() {
         Numeral hardFraction1 = new Numeral(94. + (15158. / 20736.));
         assertEquals("7X.8932", hardFraction1.toString());
-        // TODO: Find a case that requires BigInteger Arithmetic
+        long hardFraction2Long = 0x0010_0000_0000_0100L;
+        Numeral hardFraction2 = new Numeral(Double.longBitsToDouble(hardFraction2Long));
+        assertEquals("9.X1696e-1EX", hardFraction2.toString()); // TODO: Fails Testcase
     }
 }
