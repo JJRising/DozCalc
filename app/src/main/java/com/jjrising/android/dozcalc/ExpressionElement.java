@@ -22,7 +22,7 @@ class ExpressionElement {
  * solutions.
  */
 class Numeral extends ExpressionElement {
-    double value;
+    private double value;
 
     Numeral(double value) {
         super(NUMBER);
@@ -89,9 +89,9 @@ class Operator extends ExpressionElement {
     static final Boolean LEFT = false;
     static final Boolean RIGHT = true;
 
-    int value;
-    int precedence;
-    Boolean associativity; // True: Right associative
+    private int value;
+    private int precedence;
+    private Boolean associativity; // True: Right associative
 
     Operator(int op) {
         super(OPERATOR);
