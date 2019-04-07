@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/BasicOpsBackground">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow android:layout_weight="1">
+
+            <Button
+                android:id="@+id/buttonExponent"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:autoSizeTextType="uniform"
+                android:onClick="enterValue"
+                android:tag="25"
+                android:text="@string/string_exponent" />
+
+            <Button
+                android:id="@+id/buttonBack"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:autoSizeTextType="uniform"
+                android:onClick="enterValue"
+                android:tag="back"
+                android:text="@string/string_backspace" />
+
+        </TableRow>
+
+        <TableRow android:layout_weight="1">
+
+            <Button
+                android:id="@+id/buttonMultiply"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:autoSizeTextType="uniform"
+                android:onClick="enterValue"
+                android:tag="23"
+                android:text="@string/string_multiply" />
+
+            <Button
+                android:id="@+id/buttonDivide"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:autoSizeTextType="uniform"
+                android:onClick="enterValue"
+                android:tag="24"
+                android:text="@string/string_divide" />
+
+        </TableRow>
+
+        <TableRow android:layout_weight="1">
+
+            <Button
+                android:id="@+id/buttonAdd"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:autoSizeTextType="uniform"
+                android:onClick="enterValue"
+                android:tag="21"
+                android:text="@string/string_add" />
+
+            <Button
+                android:id="@+id/buttonSubtract"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:autoSizeTextType="uniform"
+                android:onClick="enterValue"
+                android:tag="22"
+                android:text="@string/string_subtract" />
+
+        </TableRow>
+
+        <TableRow android:layout_weight="1">
+
+            <Button
+                android:id="@+id/buttonDot"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:autoSizeTextType="uniform"
+                android:onClick="enterValue"
+                android:tag="12"
+                android:text="@string/string_dot" />
+
+            <Button
+                android:id="@+id/buttonEquals"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:autoSizeTextType="uniform"
+                android:onClick="runCalculation"
+                android:tag="20"
+                android:text="@string/string_equals" />
+
+        </TableRow>
+
+    </TableLayout>
+
+</android.support.constraint.ConstraintLayout>
