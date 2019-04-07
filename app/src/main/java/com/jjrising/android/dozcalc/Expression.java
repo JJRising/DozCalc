@@ -18,7 +18,7 @@ class Expression {
         express.add(a);
     }
 
-    Numeral calc() {
+    Numeral calc() throws CalculationError {
         ArrayList<ExpressionElement> calcQueue = new ArrayList<>();
         ArrayList<ExpressionElement> opStack = new ArrayList<>();
 
@@ -54,6 +54,7 @@ class Expression {
 
         // Run the calculation through the calcQueue
         ListIterator<ExpressionElement> calcIterator = calcQueue.listIterator();
+        int size = calcQueue.size();
         while (calcIterator.hasNext()) {
             el = calcIterator.next();
             if (el.getType() == ExpressionElement.OPERATOR) {
@@ -67,6 +68,7 @@ class Expression {
                         a = (Numeral) calcIterator.previous();
                         a.add(b);
                         calcIterator.next();
+                        size -= 2;
                         break;
                     case Operator.SUBTRACT:
                         b = (Numeral) calcIterator.previous();
@@ -74,6 +76,7 @@ class Expression {
                         a = (Numeral) calcIterator.previous();
                         a.subtract(b);
                         calcIterator.next();
+                        size -= 2;
                         break;
                     case Operator.MULTIPLY:
                         b = (Numeral) calcIterator.previous();
@@ -81,6 +84,7 @@ class Expression {
                         a = (Numeral) calcIterator.previous();
                         a.multiply(b);
                         calcIterator.next();
+                        size -= 2;
                         break;
                     case Operator.DIVIDE:
                         b = (Numeral) calcIterator.previous();
@@ -88,10 +92,28 @@ class Expression {
                         a = (Numeral) calcIterator.previous();
                         a.divide(b);
                         calcIterator.next();
+                        size -= 2;
                         break;
                 }
             }
         }
-        return (Numeral) calcIterator.previous();
+        // There should only be 1 element remaining in the ListIterator and it should be
+        // a Numeral.
+        if (size != 1) {
+            throw new CalculationError(
+                    "Not all elements were handled properly. Likely an invalid input");
+        }
+        ExpressionElement ret = calcIterator.previous();
+        if (ret.getType() != ExpressionElement.NUMBER) {
+            throw new CalculationError(
+                    "Remaining element was an operator. Likely an invalid input");
+        }
+        return (Numeral) ret;
+    }
+}
+
+class CalculationError extends Exception {
+    CalculationError(String s) {
+        super(s);
     }
 }
