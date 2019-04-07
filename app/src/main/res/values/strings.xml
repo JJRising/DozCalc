@@ -21,4 +21,9 @@
     <string name="string_subtract">-</string>
     <string name="string_divide">/</string>
     <string name="string_multiply">*</string>
+    <string name="string_sqrt">sqrt</string>
+    <string name="string_factorial">!</string>
+    <string name="string_sin">sin</string>
+    <string name="string_cos">cos</string>
+    <string name="string_tan">tan</string>
 </resources>
