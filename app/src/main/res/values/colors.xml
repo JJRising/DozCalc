@@ -3,4 +3,7 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="NumPadBackground">#FFFFFF</color>
+    <color name="BasicOpsBackground">#7F80BA</color>
+    <color name="AdvancePadBackground">#4247B0</color>
 </resources>
