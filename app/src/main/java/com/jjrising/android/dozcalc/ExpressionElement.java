@@ -58,19 +58,53 @@ class Numeral extends ExpressionElement {
     }
 
     void add(Numeral a) {
-        this.value += a.getValue();
+        value += a.getValue();
     }
 
     void subtract(Numeral a) {
-        this.value -= a.getValue();
+        value -= a.getValue();
     }
 
     void multiply(Numeral a) {
-        this.value *= a.getValue();
+        value *= a.getValue();
     }
 
     void divide(Numeral a) {
-        this.value /= a.getValue();
+        value /= a.getValue();
+    }
+
+    void exp(Numeral a) {
+        value = Math.pow(value, a.value);
+    }
+
+    void sqrt() {
+        value = Math.sqrt(value);
+    }
+
+    void factorial() {
+        if (Double.isInfinite(value) || value == Math.floor(value)) {
+            value = Double.NaN;
+        } else if (value == 0.0 || value == 1.0) {
+            value = 1;
+        } else {
+            int ret = 1;
+            for (int i = 2; i <= value; i++) {
+                ret *= i;
+            }
+            value = ret;
+        }
+    }
+
+    void sin() {
+        value = Math.sin(value);
+    }
+
+    void cos() {
+        value = Math.cos(value);
+    }
+
+    void tan() {
+        value = Math.tan(value);
     }
 
     /**
@@ -130,6 +164,12 @@ class Operator extends ExpressionElement {
     static final int SUBTRACT = 1;
     static final int MULTIPLY = 2;
     static final int DIVIDE = 3;
+    static final int EXPONENT = 4;
+    static final int SQRT = 5;
+    static final int FACTORIAL = 6;
+    static final int SIN = 7;
+    static final int COS = 8;
+    static final int TAN = 9;
     static final Boolean LEFT = false;
     static final Boolean RIGHT = true;
 
@@ -157,8 +197,38 @@ class Operator extends ExpressionElement {
                 break;
             case Characters.OPERATOR_DIVIDE:
                 value = DIVIDE;
-                precedence = 4;
+                precedence = 3;
                 associativity = LEFT;
+                break;
+            case Characters.OPERATOR_EXPONENT:
+                value = EXPONENT;
+                precedence = 4;
+                associativity = RIGHT;
+                break;
+            case Characters.OPERATOR_SQRT:
+                value = SQRT;
+                precedence = 5;
+                associativity = RIGHT;
+                break;
+            case Characters.OPERATOR_FACTORIAL:
+                value = FACTORIAL;
+                precedence = 5;
+                associativity = RIGHT;
+                break;
+            case Characters.OPERATOR_SIN:
+                value = SIN;
+                precedence = 5;
+                associativity = RIGHT;
+                break;
+            case Characters.OPERATOR_COS:
+                value = COS;
+                precedence = 5;
+                associativity = RIGHT;
+                break;
+            case Characters.OPERATOR_TAN:
+                value = TAN;
+                precedence = 5;
+                associativity = RIGHT;
                 break;
         }
     }

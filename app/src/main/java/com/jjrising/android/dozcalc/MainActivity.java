@@ -36,8 +36,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void runCalculation(View view) {
         Expression express = mInputString.createExpression();
-        Numeral result = express.calc();
-        mResultText.setText(result.toString());
+        String resultText;
+        try {
+            resultText = express.calc().toString();
+        } catch (CalculationError e) {
+            resultText = e.error;
+        }
+        mResultText.setText(resultText);
         mInputText.setText("");
         mInputString.clear();
     }

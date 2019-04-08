@@ -13,8 +13,16 @@ class InputString {
 
     InputString(String str) {
         list = new ArrayList<>();
+        StringBuilder strBuilder = new StringBuilder();
+        String regexPattern = "[XE\\d.+\\-*/^!]|sqrt|sin|cos|tan";
         for (char ch : str.toCharArray()) {
-            list.add(Characters.getInt(Character.toString(ch)));
+            // Use a regex to see if character makes a symbol
+            // ch may only be part of a larger symbol such as "sin"
+            strBuilder.append(Character.toString(ch));
+            if (strBuilder.toString().matches(regexPattern)) {
+                list.add(Characters.getInt(strBuilder.toString()));
+                strBuilder = new StringBuilder(); //Clear the string builder
+            }
         }
     }
 

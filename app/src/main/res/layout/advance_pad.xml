@@ -30,7 +30,7 @@
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform"
                     android:onClick="enterValue"
-                    android:tag="12"
+                    android:tag="26"
                     android:text="@string/string_sqrt" />
 
             </TableRow>
@@ -44,7 +44,7 @@
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform"
                     android:onClick="enterValue"
-                    android:tag="12"
+                    android:tag="27"
                     android:text="@string/string_factorial" />
 
             </TableRow>
@@ -58,7 +58,7 @@
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform"
                     android:onClick="enterValue"
-                    android:tag="12"
+                    android:tag="28"
                     android:text="@string/string_sin" />
 
                 <Button
@@ -68,7 +68,7 @@
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform"
                     android:onClick="enterValue"
-                    android:tag="12"
+                    android:tag="29"
                     android:text="@string/string_cos" />
 
                 <Button
@@ -78,7 +78,7 @@
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform"
                     android:onClick="enterValue"
-                    android:tag="12"
+                    android:tag="30"
                     android:text="@string/string_tan" />
 
             </TableRow>

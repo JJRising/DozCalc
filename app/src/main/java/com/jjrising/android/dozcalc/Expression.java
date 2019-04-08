@@ -94,6 +94,44 @@ class Expression {
                         calcIterator.next();
                         size -= 2;
                         break;
+                    case Operator.EXPONENT:
+                        b = (Numeral) calcIterator.previous();
+                        calcIterator.remove();
+                        a = (Numeral) calcIterator.previous();
+                        a.exp(b);
+                        calcIterator.next();
+                        size -= 2;
+                        break;
+                    case Operator.SQRT:
+                        a = (Numeral) calcIterator.previous();
+                        a.sqrt();
+                        calcIterator.next();
+                        size -= 1;
+                        break;
+                    case Operator.FACTORIAL:
+                        a = (Numeral) calcIterator.previous();
+                        a.factorial();
+                        calcIterator.next();
+                        size -= 1;
+                        break;
+                    case Operator.SIN:
+                        a = (Numeral) calcIterator.previous();
+                        a.sin();
+                        calcIterator.next();
+                        size -= 1;
+                        break;
+                    case Operator.COS:
+                        a = (Numeral) calcIterator.previous();
+                        a.cos();
+                        calcIterator.next();
+                        size -= 1;
+                        break;
+                    case Operator.TAN:
+                        a = (Numeral) calcIterator.previous();
+                        a.tan();
+                        calcIterator.next();
+                        size -= 1;
+                        break;
                 }
             }
         }
@@ -113,7 +151,10 @@ class Expression {
 }
 
 class CalculationError extends Exception {
+    String error;
+
     CalculationError(String s) {
         super(s);
+        error = s;
     }
 }
