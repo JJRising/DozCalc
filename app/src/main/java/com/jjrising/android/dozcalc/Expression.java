@@ -26,24 +26,53 @@ class Expression {
         ExpressionElement el;
         while (!express.isEmpty()) {
             el = express.remove(0);
-            if (el.getType() == ExpressionElement.NUMBER) {
+            int type = el.getType();
+            if (type == ExpressionElement.NUMBER) {
                 calcQueue.add(el);
-            } else {
+            } else if (type == ExpressionElement.FUNCTION) {
+                if (((Function) el).associativity() == Function.RIGHT) {
+                    opStack.add(el);
+                } else {
+                    calcQueue.add(el);
+                }
+            } else if (type == ExpressionElement.OPERATOR) {
                 if (opStack.isEmpty()) {
                     opStack.add(el);
                 } else {
-                    Operator top = (Operator) opStack.get(opStack.size() - 1);
-                    while (top.precedence() > ((Operator) el).precedence() ||
-                            (top.precedence() == ((Operator) el).precedence()
-                                    && top.associativity() == Operator.LEFT)) {
+                    ExpressionElement top = opStack.get(opStack.size() - 1);
+                    while (top.getType() != ExpressionElement.PARENTHESES
+                            && (
+                            top.getType() == ExpressionElement.FUNCTION
+                                    || ((Operator) top).precedence() > ((Operator) el).precedence()
+                                    || ((Operator) top).precedence() == ((Operator) el).precedence()
+                                    && ((Operator) top).associativity() == Operator.LEFT)) {
                         calcQueue.add(opStack.remove(opStack.size() - 1));
                         if (opStack.isEmpty()) {
                             break;
                         } else {
-                            top = (Operator) opStack.get(opStack.size() - 1);
+                            top = opStack.get(opStack.size() - 1);
                         }
                     }
                     opStack.add(el);
+                }
+            } else { // parentheses
+                if (((Paren) el).isOpen()) { // '('
+                    opStack.add(el);
+                } else {  // ')'
+                    if (opStack.isEmpty()) {
+                        throw new CalculationError("No '(' found.");
+                    }
+                    while (true) {
+                        ExpressionElement top = opStack.remove(opStack.size() - 1); // Peek at the top
+                        if (top.getType() == ExpressionElement.PARENTHESES) {
+                            break;
+                        } else {
+                            calcQueue.add(top);
+                        }
+                        if (opStack.isEmpty()) {
+                            throw new CalculationError("No '(' found.");
+                        }
+                    }
                 }
             }
         }
@@ -57,82 +86,21 @@ class Expression {
         int size = calcQueue.size();
         while (calcIterator.hasNext()) {
             el = calcIterator.next();
-            if (el.getType() == ExpressionElement.OPERATOR) {
+            int type = el.getType();
+            if (type == ExpressionElement.OPERATOR) {
                 calcIterator.remove();
-                Numeral a;
-                Numeral b;
-                switch (((Operator) el).op()) {
-                    case Operator.ADD:
-                        b = (Numeral) calcIterator.previous();
-                        calcIterator.remove();
-                        a = (Numeral) calcIterator.previous();
-                        a.add(b);
-                        calcIterator.next();
-                        size -= 2;
-                        break;
-                    case Operator.SUBTRACT:
-                        b = (Numeral) calcIterator.previous();
-                        calcIterator.remove();
-                        a = (Numeral) calcIterator.previous();
-                        a.subtract(b);
-                        calcIterator.next();
-                        size -= 2;
-                        break;
-                    case Operator.MULTIPLY:
-                        b = (Numeral) calcIterator.previous();
-                        calcIterator.remove();
-                        a = (Numeral) calcIterator.previous();
-                        a.multiply(b);
-                        calcIterator.next();
-                        size -= 2;
-                        break;
-                    case Operator.DIVIDE:
-                        b = (Numeral) calcIterator.previous();
-                        calcIterator.remove();
-                        a = (Numeral) calcIterator.previous();
-                        a.divide(b);
-                        calcIterator.next();
-                        size -= 2;
-                        break;
-                    case Operator.EXPONENT:
-                        b = (Numeral) calcIterator.previous();
-                        calcIterator.remove();
-                        a = (Numeral) calcIterator.previous();
-                        a.exp(b);
-                        calcIterator.next();
-                        size -= 2;
-                        break;
-                    case Operator.SQRT:
-                        a = (Numeral) calcIterator.previous();
-                        a.sqrt();
-                        calcIterator.next();
-                        size -= 1;
-                        break;
-                    case Operator.FACTORIAL:
-                        a = (Numeral) calcIterator.previous();
-                        a.factorial();
-                        calcIterator.next();
-                        size -= 1;
-                        break;
-                    case Operator.SIN:
-                        a = (Numeral) calcIterator.previous();
-                        a.sin();
-                        calcIterator.next();
-                        size -= 1;
-                        break;
-                    case Operator.COS:
-                        a = (Numeral) calcIterator.previous();
-                        a.cos();
-                        calcIterator.next();
-                        size -= 1;
-                        break;
-                    case Operator.TAN:
-                        a = (Numeral) calcIterator.previous();
-                        a.tan();
-                        calcIterator.next();
-                        size -= 1;
-                        break;
-                }
+                Numeral b = (Numeral) calcIterator.previous();
+                calcIterator.remove();
+                Numeral a = (Numeral) calcIterator.previous();
+                ((Operator) el).run(a, b);
+                calcIterator.next();
+                size -= 2;
+            } else if (type == ExpressionElement.FUNCTION) {
+                calcIterator.remove();
+                Numeral a = (Numeral) calcIterator.previous();
+                ((Function) el).run(a);
+                calcIterator.next();
+                size -= 1;
             }
         }
         // There should only be 1 element remaining in the ListIterator and it should be

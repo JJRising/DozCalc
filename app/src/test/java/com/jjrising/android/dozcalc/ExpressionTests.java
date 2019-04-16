@@ -64,5 +64,9 @@ public class ExpressionTests {
         InputString in2 = new InputString("sqrt14");
         Expression sqrt = in2.createExpression();
         assertEquals("4", sqrt.calc().toString());
+
+        InputString in3 = new InputString("4!");
+        Expression fact = in3.createExpression();
+        assertEquals("20", fact.calc().toString());
     }
 }

@@ -7,6 +7,8 @@ import java.util.ArrayList;
 class ExpressionElement {
     static final int NUMBER = 0;
     static final int OPERATOR = 1;
+    static final int PARENTHESES = 2;
+    static final int FUNCTION = 3;
 
     private int type;
 
@@ -57,54 +59,8 @@ class Numeral extends ExpressionElement {
         return value;
     }
 
-    void add(Numeral a) {
-        value += a.getValue();
-    }
-
-    void subtract(Numeral a) {
-        value -= a.getValue();
-    }
-
-    void multiply(Numeral a) {
-        value *= a.getValue();
-    }
-
-    void divide(Numeral a) {
-        value /= a.getValue();
-    }
-
-    void exp(Numeral a) {
-        value = Math.pow(value, a.value);
-    }
-
-    void sqrt() {
-        value = Math.sqrt(value);
-    }
-
-    void factorial() {
-        if (Double.isInfinite(value) || value == Math.floor(value)) {
-            value = Double.NaN;
-        } else if (value == 0.0 || value == 1.0) {
-            value = 1;
-        } else {
-            int ret = 1;
-            for (int i = 2; i <= value; i++) {
-                ret *= i;
-            }
-            value = ret;
-        }
-    }
-
-    void sin() {
-        value = Math.sin(value);
-    }
-
-    void cos() {
-        value = Math.cos(value);
-    }
-
-    void tan() {
-        value = Math.tan(value);
+    void setValue(double value) {
+        this.value = value;
     }
 
     /**
@@ -165,21 +121,16 @@ class Operator extends ExpressionElement {
     static final int MULTIPLY = 2;
     static final int DIVIDE = 3;
     static final int EXPONENT = 4;
-    static final int SQRT = 5;
-    static final int FACTORIAL = 6;
-    static final int SIN = 7;
-    static final int COS = 8;
-    static final int TAN = 9;
-    static final Boolean LEFT = false;
-    static final Boolean RIGHT = true;
+    static final boolean LEFT = false;
+    static final boolean RIGHT = true;
 
     private int value;
     private int precedence;
-    private Boolean associativity; // True: Right associative
+    private boolean associativity; // True: Right associative
 
-    Operator(int op) {
+    Operator(int sym) {
         super(OPERATOR);
-        switch (op) {
+        switch (sym) {
             case Characters.OPERATOR_ADD:
                 value = ADD;
                 precedence = 2;
@@ -205,43 +156,124 @@ class Operator extends ExpressionElement {
                 precedence = 4;
                 associativity = RIGHT;
                 break;
-            case Characters.OPERATOR_SQRT:
-                value = SQRT;
-                precedence = 5;
-                associativity = RIGHT;
-                break;
-            case Characters.OPERATOR_FACTORIAL:
-                value = FACTORIAL;
-                precedence = 5;
-                associativity = RIGHT;
-                break;
-            case Characters.OPERATOR_SIN:
-                value = SIN;
-                precedence = 5;
-                associativity = RIGHT;
-                break;
-            case Characters.OPERATOR_COS:
-                value = COS;
-                precedence = 5;
-                associativity = RIGHT;
-                break;
-            case Characters.OPERATOR_TAN:
-                value = TAN;
-                precedence = 5;
-                associativity = RIGHT;
-                break;
         }
     }
 
-    int op() {
-        return value;
+    void run(Numeral a, Numeral b) {
+        switch (value) {
+            case ADD:
+                a.setValue(a.getValue() + b.getValue());
+                break;
+            case SUBTRACT:
+                a.setValue(a.getValue() - b.getValue());
+                break;
+            case MULTIPLY:
+                a.setValue(a.getValue() * b.getValue());
+                break;
+            case DIVIDE:
+                a.setValue(a.getValue() / b.getValue());
+                break;
+            case EXPONENT:
+                a.setValue(Math.pow(a.getValue(), b.getValue()));
+                break;
+        }
     }
 
     int precedence() {
         return precedence;
     }
 
-    Boolean associativity() {
+    boolean associativity() {
+        return associativity;
+    }
+}
+
+class Paren extends ExpressionElement {
+    static final boolean OPEN = true;
+    static final boolean CLOSE = false;
+
+    private boolean open;
+
+    Paren(boolean open) {
+        super(PARENTHESES);
+        this.open = open;
+    }
+
+    boolean isOpen() {
+        return open;
+    }
+}
+
+class Function extends ExpressionElement {
+    static final int SQRT = 0;
+    static final int FACTORIAL = 1;
+    static final int SIN = 2;
+    static final int COS = 3;
+    static final int TAN = 4;
+    static final boolean LEFT = false;
+    static final boolean RIGHT = true;
+
+    private int func;
+    private boolean associativity;
+
+    Function(int sym) {
+        super(FUNCTION);
+        switch (sym) {
+            case Characters.FUNCTION_SQRT:
+                func = SQRT;
+                associativity = RIGHT;
+                break;
+            case Characters.FUNCTION_FACTORIAL:
+                func = FACTORIAL;
+                associativity = LEFT;
+                break;
+            case Characters.FUNCTION_SIN:
+                func = SIN;
+                associativity = RIGHT;
+                break;
+            case Characters.FUNCTION_COS:
+                func = COS;
+                associativity = RIGHT;
+                break;
+            case Characters.FUNCTION_TAN:
+                func = TAN;
+                associativity = RIGHT;
+                break;
+        }
+    }
+
+    void run(Numeral a) {
+        switch (func) {
+            case SQRT:
+                a.setValue(Math.sqrt(a.getValue()));
+                break;
+            case FACTORIAL:
+                double value = a.getValue();
+                if (Double.isInfinite(value) || value != Math.floor(value)) {
+                    a.setValue(Double.NaN);
+                } else if (value == 0.0 || value == 1.0) {
+                    a.setValue(1.0);
+                } else {
+                    int ret = 1;
+                    for (int i = 2; i <= value; i++) {
+                        ret *= i;
+                    }
+                    a.setValue((double) ret);
+                }
+                break;
+            case SIN:
+                a.setValue(Math.sin(a.getValue()));
+                break;
+            case COS:
+                a.setValue(Math.cos(a.getValue()));
+                break;
+            case TAN:
+                a.setValue(Math.tan(a.getValue()));
+                break;
+        }
+    }
+
+    boolean associativity() {
         return associativity;
     }
 }

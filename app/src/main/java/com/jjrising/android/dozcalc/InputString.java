@@ -56,15 +56,19 @@ class InputString {
         while (iterator.hasNext()) {
             int el = iterator.next();
             if (el >= Characters.OPERATOR_LOWER_LIMIT && !numBuilder.isEmpty()) {
+                // Add the number that in the numBuilder
                 EEList.add(new Numeral(numBuilder));
                 numBuilder.clear();
             }
-            if (el >= Characters.OPERATOR_LOWER_LIMIT)
+            if (el >= Characters.FUNCTION_LOWER_LIMIT) //Its a function
+                EEList.add(new Function(el));
+            else if (el >= Characters.OPERATOR_LOWER_LIMIT) // Its an operator
                 EEList.add(new Operator(el));
-            else
+            else // Its a digit
                 numBuilder.add(el);
         }
         if (!numBuilder.isEmpty())
+            // complete the final number
             EEList.add(new Numeral(numBuilder));
         return new Expression(EEList);
     }

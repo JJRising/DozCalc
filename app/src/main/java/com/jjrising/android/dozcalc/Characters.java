@@ -4,16 +4,18 @@ import com.google.common.collect.ImmutableBiMap;
 
 class Characters {
     static final int OPERATOR_LOWER_LIMIT = 20;
+    static final int FUNCTION_LOWER_LIMIT = 100;
+
     static final int OPERATOR_ADD = 21;
     static final int OPERATOR_SUBTRACT = 22;
     static final int OPERATOR_MULTIPLY = 23;
     static final int OPERATOR_DIVIDE = 24;
     static final int OPERATOR_EXPONENT = 25;
-    static final int OPERATOR_SQRT = 26;
-    static final int OPERATOR_FACTORIAL = 27;
-    static final int OPERATOR_SIN = 28;
-    static final int OPERATOR_COS = 29;
-    static final int OPERATOR_TAN = 30;
+    static final int FUNCTION_SQRT = 101;
+    static final int FUNCTION_FACTORIAL = 102;
+    static final int FUNCTION_SIN = 103;
+    static final int FUNCTION_COS = 104;
+    static final int FUNCTION_TAN = 105;
 
     private static final ImmutableBiMap<Integer, String> charMap
             = new ImmutableBiMap.Builder<Integer, String>()
@@ -36,11 +38,11 @@ class Characters {
             .put(23, "*")
             .put(24, "/")
             .put(25, "^")
-            .put(26, "sqrt")
-            .put(27, "!")
-            .put(28, "sin")
-            .put(29, "cos")
-            .put(30, "tan")
+            .put(101, "sqrt")
+            .put(102, "!")
+            .put(103, "sin")
+            .put(104, "cos")
+            .put(105, "tan")
             .build();
 
     static char getCharacter(int num) {
