@@ -16,7 +16,7 @@
     <string name="string_dot">.</string>
     <string name="string_equals">=</string>
     <string name="string_backspace"><![CDATA[<-]]></string>
-    <string name="string_exponent">^</string>
+    <string name="string_exponent">x<sup><small>y</small></sup></string>
     <string name="string_add">+</string>
     <string name="string_subtract">-</string>
     <string name="string_divide">/</string>
@@ -26,4 +26,15 @@
     <string name="string_sin">sin</string>
     <string name="string_cos">cos</string>
     <string name="string_tan">tan</string>
+    <string name="string_left_parentheses">(</string>
+    <string name="string_right_parentheses">)</string>
+    <string name="string_ln">ln</string>
+    <string name="string_log">log<sub><small>10</small></sub></string>
+    <string name="string_logx">log<sub><small>x</small></sub></string>
+    <string name="string_sq">x<sup><small>2</small></sup></string>
+    <string name="string_e">e</string>
+    <string name="string_pi">pi</string>
+    <string name="string_arcsin">sin<sup><small>-1</small></sup></string>
+    <string name="string_arccos">cos<sup><small>-1</small></sup></string>
+    <string name="string_arctan">tan<sup><small>-1</small></sup></string>
 </resources>

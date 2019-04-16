@@ -32,6 +32,8 @@ class Characters {
             .put(10, "X")
             .put(11, "E")
             .put(12, ".")
+            .put(13, "(")
+            .put(14, ")")
             .put(20, "=")
             .put(21, "+")
             .put(22, "-")

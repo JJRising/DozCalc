@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
             mInputString.back();
             mInputText.setText(mInputString.getText());
         } else {
-            mInputString.add(Integer.parseInt(input));
+            mInputString.add(Characters.getInt(input));
             mInputText.setText(mInputString.getText());
         }
     }

@@ -24,41 +24,13 @@
             <TableRow android:layout_weight="1">
 
                 <Button
-                    android:id="@+id/buttonSqrt"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:autoSizeTextType="uniform"
-                    android:onClick="enterValue"
-                    android:tag="26"
-                    android:text="@string/string_sqrt" />
-
-            </TableRow>
-
-            <TableRow android:layout_weight="1">
-
-                <Button
-                    android:id="@+id/buttonFactorial"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:autoSizeTextType="uniform"
-                    android:onClick="enterValue"
-                    android:tag="27"
-                    android:text="@string/string_factorial" />
-
-            </TableRow>
-
-            <TableRow android:layout_weight="1">
-
-                <Button
                     android:id="@+id/buttonSin"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform"
                     android:onClick="enterValue"
-                    android:tag="28"
+                    android:tag="sin"
                     android:text="@string/string_sin" />
 
                 <Button
@@ -68,7 +40,7 @@
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform"
                     android:onClick="enterValue"
-                    android:tag="29"
+                    android:tag="cos"
                     android:text="@string/string_cos" />
 
                 <Button
@@ -78,8 +50,158 @@
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform"
                     android:onClick="enterValue"
-                    android:tag="30"
+                    android:tag="tan"
                     android:text="@string/string_tan" />
+
+                <Button
+                    android:id="@+id/buttonLn"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:onClick="enterValue"
+                    android:tag="ln"
+                    android:text="@string/string_ln" />
+
+                <Button
+                    android:id="@+id/buttonLog"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:onClick="enterValue"
+                    android:tag="log"
+                    android:text="@string/string_log" />
+
+                <Button
+                    android:id="@+id/buttonLogX"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:onClick="enterValue"
+                    android:tag="logx"
+                    android:text="@string/string_logx" />
+
+            </TableRow>
+
+            <TableRow android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/arcsin"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:onClick="enterValue"
+                    android:tag="arcsin"
+                    android:text="@string/string_arcsin" />
+
+                <Button
+                    android:id="@+id/arccos"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:onClick="enterValue"
+                    android:tag="arccos"
+                    android:text="@string/string_arccos" />
+
+                <Button
+                    android:id="@+id/arctan"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:onClick="enterValue"
+                    android:tag="arctan"
+                    android:text="@string/string_arctan" />
+
+                <Button
+                    android:id="@+id/e"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:onClick="enterValue"
+                    android:tag="sq"
+                    android:text="@string/string_e" />
+
+                <Button
+                    android:id="@+id/pi"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:onClick="enterValue"
+                    android:tag="pi"
+                    android:text="@string/string_pi" />
+
+                <Button
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform" />
+
+            </TableRow>
+
+            <TableRow android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/buttonSq"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:onClick="enterValue"
+                    android:tag="sq"
+                    android:text="@string/string_sq" />
+
+                <Button
+                    android:id="@+id/buttonSqrt"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:onClick="enterValue"
+                    android:tag="sqrt"
+                    android:text="@string/string_sqrt" />
+
+                <Button
+                    android:id="@+id/buttonFactorial"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:onClick="enterValue"
+                    android:tag="!"
+                    android:text="@string/string_factorial" />
+
+                <Button
+                    android:id="@+id/buttonLeftParen"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:onClick="enterValue"
+                    android:tag="("
+                    android:text="@string/string_left_parentheses" />
+
+                <Button
+                    android:id="@+id/buttonRightParen"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:onClick="enterValue"
+                    android:tag=")"
+                    android:text="@string/string_right_parentheses" />
+
+                <Button
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform" />
 
             </TableRow>
 
