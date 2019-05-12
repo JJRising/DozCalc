@@ -4,6 +4,10 @@ import com.google.common.collect.ImmutableBiMap;
 
 class Symbols {
 
+    static final String DOT = ".";
+    static final String OPEN_PAREN = "(";
+    static final String CLOSE_PAREN = ")";
+
     static ImmutableBiMap<Operator.operator, String> opStringMap
             = new ImmutableBiMap.Builder<Operator.operator, String>()
             .put(Operator.operator.ADD, "+")

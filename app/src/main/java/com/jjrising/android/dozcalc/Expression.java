@@ -58,7 +58,9 @@ class Expression {
         StringBuilder builder = new StringBuilder();
         int length = express.size();
         for (int i = 0; i < length; i++) {
-            builder.append(express.get(i).getSymbol());
+            ExpressionElement el = express.get(i);
+            String sym = el.getSymbol();
+            builder.append(sym);
         }
         return builder.toString();
     }

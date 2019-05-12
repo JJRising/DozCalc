@@ -78,6 +78,15 @@ class Digit extends ExpressionElement {
         }
     }
 
+    @Override
+    String getSymbol() {
+        if (val == values.dot) {
+            return Symbols.DOT;
+        } else {
+            return Character.toString(Symbols.getCharacter(num));
+        }
+    }
+
     enum values {dot, number}
 }
 
@@ -148,6 +157,11 @@ class Numeral extends ExpressionElement {
 
     void setValue(double value) {
         this.value = value;
+    }
+
+    @Override
+    String getSymbol() {
+        return Symbols.specialStringMap.inverse().get(value);
     }
 
     /**
@@ -274,6 +288,11 @@ class Operator extends ExpressionElement {
     }
 
     enum associativity {LEFT, RIGHT}
+
+    @Override
+    String getSymbol() {
+        return Symbols.opStringMap.get(value);
+    }
 }
 
 class Paren extends ExpressionElement {
@@ -295,12 +314,22 @@ class OpenParen extends Paren {
         super();
         this.dir = direction.OPEN;
     }
+
+    @Override
+    String getSymbol() {
+        return Symbols.OPEN_PAREN;
+    }
 }
 
 class CloseParen extends Paren {
     CloseParen() {
         super();
         this.dir = direction.CLOSE;
+    }
+
+    @Override
+    String getSymbol() {
+        return Symbols.CLOSE_PAREN;
     }
 }
 
@@ -373,6 +402,11 @@ class Function extends ExpressionElement {
     }
 
     enum associativity {LEFT, RIGHT}
+
+    @Override
+    String getSymbol() {
+        return Symbols.funcStringMap.get(func);
+    }
 }
 
 class NumberException extends Exception {
