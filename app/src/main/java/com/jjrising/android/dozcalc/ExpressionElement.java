@@ -17,7 +17,6 @@ class ExpressionElement {
         return tp;
     }
 
-    //TODO: getSymbol
     String getSymbol() {
         return "S";
     }
