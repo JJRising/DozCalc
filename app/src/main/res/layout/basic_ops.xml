@@ -22,7 +22,7 @@
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
                 android:onClick="enterValue"
-                android:tag="^"
+                android:tag="o/^"
                 android:text="@string/string_exponent" />
 
             <Button
@@ -46,7 +46,7 @@
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
                 android:onClick="enterValue"
-                android:tag="*"
+                android:tag="o/*"
                 android:text="@string/string_multiply" />
 
             <Button
@@ -56,7 +56,7 @@
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
                 android:onClick="enterValue"
-                android:tag="/"
+                android:tag="o//"
                 android:text="@string/string_divide" />
 
         </TableRow>
@@ -70,7 +70,7 @@
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
                 android:onClick="enterValue"
-                android:tag="+"
+                android:tag="o/+"
                 android:text="@string/string_add" />
 
             <Button
@@ -80,7 +80,7 @@
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
                 android:onClick="enterValue"
-                android:tag="-"
+                android:tag="o/-"
                 android:text="@string/string_subtract" />
 
         </TableRow>
@@ -94,7 +94,7 @@
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
                 android:onClick="enterValue"
-                android:tag="."
+                android:tag="d/."
                 android:text="@string/string_dot" />
 
             <Button

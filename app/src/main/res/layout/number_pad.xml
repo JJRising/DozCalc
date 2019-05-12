@@ -22,7 +22,7 @@
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
                 android:onClick="enterValue"
-                android:tag="9"
+                android:tag="d/9"
                 android:text="@string/string_9" />
 
             <Button
@@ -32,7 +32,7 @@
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
                 android:onClick="enterValue"
-                android:tag="10"
+                android:tag="d/X"
                 android:text="@string/string_dec" />
 
             <Button
@@ -42,7 +42,7 @@
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
                 android:onClick="enterValue"
-                android:tag="11"
+                android:tag="d/E"
                 android:text="@string/string_el" />
 
         </TableRow>
@@ -56,7 +56,7 @@
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
                 android:onClick="enterValue"
-                android:tag="6"
+                android:tag="d/6"
                 android:text="@string/string_6" />
 
             <Button
@@ -66,7 +66,7 @@
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
                 android:onClick="enterValue"
-                android:tag="7"
+                android:tag="d/7"
                 android:text="@string/string_7" />
 
             <Button
@@ -76,7 +76,7 @@
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
                 android:onClick="enterValue"
-                android:tag="8"
+                android:tag="d/8"
                 android:text="@string/string_8" />
 
         </TableRow>
@@ -90,7 +90,7 @@
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
                 android:onClick="enterValue"
-                android:tag="3"
+                android:tag="d/3"
                 android:text="@string/string_3" />
 
             <Button
@@ -100,7 +100,7 @@
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
                 android:onClick="enterValue"
-                android:tag="4"
+                android:tag="d/4"
                 android:text="@string/string_4" />
 
             <Button
@@ -110,7 +110,7 @@
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
                 android:onClick="enterValue"
-                android:tag="5"
+                android:tag="d/5"
                 android:text="@string/string_5" />
 
         </TableRow>
@@ -124,7 +124,7 @@
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
                 android:onClick="enterValue"
-                android:tag="0"
+                android:tag="d/0"
                 android:text="@string/string_0" />
 
             <Button
@@ -134,7 +134,7 @@
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
                 android:onClick="enterValue"
-                android:tag="1"
+                android:tag="d/1"
                 android:text="@string/string_1" />
 
             <Button
@@ -144,7 +144,7 @@
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
                 android:onClick="enterValue"
-                android:tag="2"
+                android:tag="d/2"
                 android:text="@string/string_2" />
 
         </TableRow>

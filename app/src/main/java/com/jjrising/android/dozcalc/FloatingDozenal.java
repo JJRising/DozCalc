@@ -166,12 +166,12 @@ class FloatingDozenal {
                     iValue /= 12;
                 }
                 while (iValue != 0) {
-                    digits[nDigit--] = Characters.getCharacter(c);
+                    digits[nDigit--] = Symbols.getCharacter(c);
                     dozExponent++;
                     c = iValue % 12;
                     iValue /= 12;
                 }
-                digits[nDigit] = Characters.getCharacter(c);
+                digits[nDigit] = Symbols.getCharacter(c);
             } else {
                 // same algorithm as above (same bugs, too )
                 // but using long arithmetic.
@@ -183,12 +183,12 @@ class FloatingDozenal {
                     lValue /= 12L;
                 }
                 while (lValue != 0L) {
-                    digits[nDigit--] = Characters.getCharacter(c);
+                    digits[nDigit--] = Symbols.getCharacter(c);
                     dozExponent++;
                     c = (int) (lValue % 12L);
                     lValue /= 12;
                 }
-                digits[nDigit] = Characters.getCharacter(c);
+                digits[nDigit] = Symbols.getCharacter(c);
             }
             this.dozExponent = dozExponent + 1; // Variable is being re-purposed as a counter of non fractional numbers...
             this.firstDigitIndex = nDigit;
@@ -300,7 +300,7 @@ class FloatingDozenal {
                     if (q == 0 && !high) {
                         dozExp--;
                     } else {
-                        digits[nDigit++] = Characters.getCharacter(q);
+                        digits[nDigit++] = Symbols.getCharacter(q);
                     }
 
                     //
@@ -324,7 +324,7 @@ class FloatingDozenal {
                             low = true;
                             high = true;
                         }
-                        digits[nDigit++] = Characters.getCharacter(q);
+                        digits[nDigit++] = Symbols.getCharacter(q);
                     }
                     lowDigitDifference = (b << 1) - twelves;
                     exactDecimalConversion = (b == 0);
@@ -345,7 +345,7 @@ class FloatingDozenal {
                     if (q == 0 && !high) {
                         dozExp--;
                     } else {
-                        digits[nDigit++] = Characters.getCharacter(q);
+                        digits[nDigit++] = Symbols.getCharacter(q);
                     }
 
                     //
@@ -369,7 +369,7 @@ class FloatingDozenal {
                             low = true;
                             high = true;
                         }
-                        digits[nDigit++] = Characters.getCharacter(q);
+                        digits[nDigit++] = Symbols.getCharacter(q);
                     }
                     lowDigitDifference = (b << 1) - twelves;
                     exactDecimalConversion = (b == 0);
@@ -391,7 +391,7 @@ class FloatingDozenal {
                     // oops. Usually ignore leading zero.
                     dozExp--;
                 } else {
-                    digits[nDigit++] = Characters.getCharacter(q);
+                    digits[nDigit++] = Symbols.getCharacter(q);
                 }
                 //
                 // HACK! Java spec sez that we always have at least
@@ -407,7 +407,7 @@ class FloatingDozenal {
                     MVal = MVal.multBy12(); //MVal = MVal.mult( 10 );
                     low = (BVal.cmp(MVal) < 0);
                     high = twelveSVal.addAndCmp(BVal, MVal) <= 0;
-                    digits[nDigit++] = Characters.getCharacter(q);
+                    digits[nDigit++] = Symbols.getCharacter(q);
                 }
                 if (high && low) {
                     BVal = BVal.leftShift(1);
@@ -442,20 +442,20 @@ class FloatingDozenal {
         private void roundup() {
             int i = (firstDigitIndex + nDigits - 1);
             int q = digits[i];
-            if (q == Characters.getCharacter(11)) {
-                while (q == Characters.getCharacter(11) && i > firstDigitIndex) {
-                    digits[i] = Characters.getCharacter(0);
+            if (q == Symbols.getCharacter(11)) {
+                while (q == Symbols.getCharacter(11) && i > firstDigitIndex) {
+                    digits[i] = Symbols.getCharacter(0);
                     q = digits[--i];
                 }
-                if (q == Characters.getCharacter(11)) {
+                if (q == Symbols.getCharacter(11)) {
                     // carryout! High-order 1, rest 0s, larger exp.
                     dozExponent += 1;
-                    digits[firstDigitIndex] = Characters.getCharacter(1);
+                    digits[firstDigitIndex] = Symbols.getCharacter(1);
                     return;
                 }
                 // else fall through.
             }
-            digits[i] = Characters.getCharacter(q - 47); // 0 is 48 in ascii so its really q+1
+            digits[i] = Symbols.getCharacter(q - 47); // 0 is 48 in ascii so its really q+1
         }
 
         /**
@@ -556,15 +556,15 @@ class FloatingDozenal {
                 }
                 // dozExponent has 1, 2, or 3, digits
                 if (e <= 11) {
-                    result[i++] = Characters.getCharacter(e);
+                    result[i++] = Symbols.getCharacter(e);
                 } else if (e <= 143) {
-                    result[i++] = Characters.getCharacter(e / 12);
-                    result[i++] = Characters.getCharacter(e % 12);
+                    result[i++] = Symbols.getCharacter(e / 12);
+                    result[i++] = Symbols.getCharacter(e % 12);
                 } else {
-                    result[i++] = Characters.getCharacter(e / 144);
+                    result[i++] = Symbols.getCharacter(e / 144);
                     e %= 144;
-                    result[i++] = Characters.getCharacter(e / 12);
-                    result[i++] = Characters.getCharacter(e % 12);
+                    result[i++] = Symbols.getCharacter(e / 12);
+                    result[i++] = Symbols.getCharacter(e % 12);
                 }
             }
             return i;

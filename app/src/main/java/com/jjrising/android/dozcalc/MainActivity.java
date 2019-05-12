@@ -9,7 +9,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     private TextView mInputText, mResultText;
-    private InputString mInputString;
+    private Expression mExpression;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,31 +20,42 @@ public class MainActivity extends AppCompatActivity {
 
         mInputText = findViewById(R.id.text_input);
         mResultText = findViewById(R.id.text_result);
-        mInputString = new InputString();
+        mExpression = new Expression();
     }
 
     public void enterValue(View view) {
         String input = view.getTag().toString();
         if (input.equals("back")) {
-            mInputString.back();
-            mInputText.setText(mInputString.getText());
+            mExpression.back();
+            mInputText.setText(mExpression.getText());
         } else {
-            mInputString.add(Characters.getInt(input));
-            mInputText.setText(mInputString.getText());
+            if (input.matches("^d/.*"))
+                mExpression.add(new Digit(input.substring(2)));
+            else if (input.matches("^o/.*"))
+                mExpression.add(new Operator(input.substring(2)));
+            else if (input.matches("^f/.*"))
+                mExpression.add(new Function(input.substring(2)));
+            else if (input.matches("^special/.*"))
+                mExpression.add(new Numeral(input.substring(2)));
+            else if (input.matches("^p/.*"))
+                if (input.matches("^p/\\("))
+                    mExpression.add(new OpenParen());
+                else if (input.matches("^p/\\)"))
+                    mExpression.add(new CloseParen());
+            mInputText.setText(mExpression.getText());
         }
     }
 
     public void runCalculation(View view) {
-        Expression express = mInputString.createExpression();
         String resultText;
         try {
-            resultText = express.calc().toString();
+            resultText = mExpression.calc().toString();
         } catch (CalculationError e) {
             resultText = e.error;
         }
         mResultText.setText(resultText);
         mInputText.setText("");
-        mInputString.clear();
+        mExpression.clear();
     }
 }
 

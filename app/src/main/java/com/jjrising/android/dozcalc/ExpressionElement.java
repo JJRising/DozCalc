@@ -3,22 +3,82 @@ package com.jjrising.android.dozcalc;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 class ExpressionElement {
-    static final int NUMBER = 0;
-    static final int OPERATOR = 1;
-    static final int PARENTHESES = 2;
-    static final int FUNCTION = 3;
 
-    private int type;
+    private type tp;
 
-    ExpressionElement(int type) {
-        this.type = type;
+    ExpressionElement(type tp) {
+        this.tp = tp;
     }
 
-    int getType() {
-        return type;
+    type getType() {
+        return tp;
     }
+
+    //TODO: getSymbol
+    String getSymbol() {
+        return "S";
+    }
+
+    enum type {DIGIT, NUMBER, OPERATOR, PARENTHESES, FUNCTION}
+}
+
+class Digit extends ExpressionElement {
+    private values val;
+    private int num;
+
+    Digit(values val) throws NumberException {
+        super(type.DIGIT);
+        if (val == values.dot) {
+            this.val = val;
+            num = -1;
+        } else {
+            throw new NumberException("Created a digit with no assigned number");
+        }
+    }
+
+    Digit(int num) {
+        super(type.DIGIT);
+        this.val = values.number;
+        this.num = num;
+    }
+
+    Digit(String s) {
+        super(type.DIGIT);
+        switch (s) {
+            case ".":
+                val = values.dot;
+                break;
+            case "X":
+                val = values.number;
+                num = 10;
+                break;
+            case "E":
+                val = values.number;
+                num = 11;
+                break;
+            default:
+                val = values.number;
+                num = Integer.parseInt(s);
+                break;
+        }
+    }
+
+    boolean isDot() {
+        return val == values.dot;
+    }
+
+    int getNum() throws NumberException {
+        if (val == values.dot) {
+            throw new NumberException("Accessing value of a dot");
+        } else {
+            return num;
+        }
+    }
+
+    enum values {dot, number}
 }
 
 /**
@@ -27,32 +87,59 @@ class ExpressionElement {
  */
 class Numeral extends ExpressionElement {
     private double value;
+    private boolean exact;
 
     Numeral(double value) {
-        super(NUMBER);
+        super(type.NUMBER);
         this.value = value;
     }
 
-    Numeral(ArrayList<Integer> builder) {
-        super(NUMBER);
-        boolean hasDot = builder.contains(Characters.getInt("."));
-        int dotIndex;
-        if (hasDot)
-            dotIndex = builder.indexOf(Characters.getInt("."));
-        else
-            dotIndex = builder.size();
-        for (int i = 0; i < dotIndex; i++) {
-            int addValue = builder.get(dotIndex - i - 1);
-            for (int j = 0; j < i; j++)
+    Numeral(ArrayList<Digit> builder) throws NumberException {
+        super(type.NUMBER);
+        Iterator<Digit> iter = builder.iterator();
+        // Check to make sure it has at most 1 dot
+        boolean hasDot = false;
+        int dotIndex = -1;
+        int i = 0;
+        while (iter.hasNext()) {
+            Digit d = iter.next();
+            if (d.isDot()) {
+                if (hasDot) {
+                    throw new NumberException("Illegal number format (Too many dots).");
+                } else {
+                    hasDot = true;
+                    dotIndex = i;
+                }
+            }
+            i++;
+        }
+        iter = builder.iterator(); // reset the iterator;
+        int size = builder.size();
+        value = 0.0;
+        int wholeNumberStopIndex = hasDot ? dotIndex : size;
+        for (i = 0; i < wholeNumberStopIndex; i++) {
+            Digit d = iter.next();
+            double addValue = d.getNum();
+            for (int j = 0; j < wholeNumberStopIndex - i - 1; j++) {
                 addValue *= 12;
+            }
             value += addValue;
         }
-        for (int i = dotIndex + 1; i < builder.size(); i++) {
-            double addValue = builder.get(i);
-            for (int j = 0; j < i - dotIndex; j++)
-                addValue /= 12;
-            value += addValue;
+        if (hasDot) {
+            iter.next(); // pass the dot.
+            for (i = 0; i < size - dotIndex - 1; i++) {
+                Digit d = iter.next();
+                double addValue = d.getNum();
+                for (int j = 0; j <= i; j++) {
+                    addValue /= 12;
+                }
+                value += addValue;
+            }
         }
+    }
+
+    Numeral(String str) {
+        this(Symbols.specialStringMap.get(str));
     }
 
     double getValue() {
@@ -107,8 +194,12 @@ class Numeral extends ExpressionElement {
 
         FloatingDozenal.BinaryToDozBuffer buf = new FloatingDozenal.BinaryToDozBuffer();
         buf.setSign(isNegative);
-        boolean exact = buf.doubleToDoz(exp, mantissa, numberOfSignificantBits);
+        exact = buf.doubleToDoz(exp, mantissa, numberOfSignificantBits);
         return buf.toJavaFormatString();
+    }
+
+    boolean isExact() {
+        return exact;
     }
 }
 
@@ -116,48 +207,47 @@ class Numeral extends ExpressionElement {
  * Class for all the operators that can be used in an expression.
  */
 class Operator extends ExpressionElement {
-    static final int ADD = 0;
-    static final int SUBTRACT = 1;
-    static final int MULTIPLY = 2;
-    static final int DIVIDE = 3;
-    static final int EXPONENT = 4;
-    static final boolean LEFT = false;
-    static final boolean RIGHT = true;
 
-    private int value;
+    private operator value;
+    private associativity associate;
     private int precedence;
-    private boolean associativity; // True: Right associative
 
-    Operator(int sym) {
-        super(OPERATOR);
-        switch (sym) {
-            case Characters.OPERATOR_ADD:
-                value = ADD;
+    Operator(operator value) {
+        super(type.OPERATOR);
+        this.value = value;
+        switch (value) {
+            case ADD:
                 precedence = 2;
-                associativity = LEFT;
+                associate = associativity.LEFT;
                 break;
-            case Characters.OPERATOR_SUBTRACT:
-                value = SUBTRACT;
+            case SUBTRACT:
                 precedence = 2;
-                associativity = LEFT;
+                associate = associativity.LEFT;
                 break;
-            case Characters.OPERATOR_MULTIPLY:
-                value = MULTIPLY;
+            case MULTIPLY:
                 precedence = 3;
-                associativity = LEFT;
+                associate = associativity.LEFT;
                 break;
-            case Characters.OPERATOR_DIVIDE:
-                value = DIVIDE;
+            case DIVIDE:
                 precedence = 3;
-                associativity = LEFT;
+                associate = associativity.LEFT;
                 break;
-            case Characters.OPERATOR_EXPONENT:
-                value = EXPONENT;
+            case EXPONENT:
                 precedence = 4;
-                associativity = RIGHT;
+                associate = associativity.RIGHT;
                 break;
         }
     }
+
+    Operator(String sym) {
+        this(Symbols.opStringMap.inverse().get(sym));
+    }
+
+    associativity associativity() {
+        return associate;
+    }
+
+    enum operator {ADD, SUBTRACT, MULTIPLY, DIVIDE, EXPONENT}
 
     void run(Numeral a, Numeral b) {
         switch (value) {
@@ -183,64 +273,73 @@ class Operator extends ExpressionElement {
         return precedence;
     }
 
-    boolean associativity() {
-        return associativity;
-    }
+    enum associativity {LEFT, RIGHT}
 }
 
 class Paren extends ExpressionElement {
-    static final boolean OPEN = true;
-    static final boolean CLOSE = false;
+    direction dir;
 
-    private boolean open;
-
-    Paren(boolean open) {
-        super(PARENTHESES);
-        this.open = open;
+    Paren() {
+        super(type.PARENTHESES);
     }
 
     boolean isOpen() {
-        return open;
+        return dir == direction.OPEN;
+    }
+
+    enum direction {OPEN, CLOSE}
+}
+
+class OpenParen extends Paren {
+    OpenParen() {
+        super();
+        this.dir = direction.OPEN;
+    }
+}
+
+class CloseParen extends Paren {
+    CloseParen() {
+        super();
+        this.dir = direction.CLOSE;
     }
 }
 
 class Function extends ExpressionElement {
-    static final int SQRT = 0;
-    static final int FACTORIAL = 1;
-    static final int SIN = 2;
-    static final int COS = 3;
-    static final int TAN = 4;
-    static final boolean LEFT = false;
-    static final boolean RIGHT = true;
 
-    private int func;
-    private boolean associativity;
+    private function func;
+    private associativity associate;
 
-    Function(int sym) {
-        super(FUNCTION);
-        switch (sym) {
-            case Characters.FUNCTION_SQRT:
-                func = SQRT;
-                associativity = RIGHT;
+    Function(function func) {
+        super(type.FUNCTION);
+        this.func = func;
+        switch (func) {
+            case SQRT:
+                associate = associativity.RIGHT;
                 break;
-            case Characters.FUNCTION_FACTORIAL:
-                func = FACTORIAL;
-                associativity = LEFT;
+            case FACTORIAL:
+                associate = associativity.LEFT;
                 break;
-            case Characters.FUNCTION_SIN:
-                func = SIN;
-                associativity = RIGHT;
+            case SIN:
+                associate = associativity.RIGHT;
                 break;
-            case Characters.FUNCTION_COS:
-                func = COS;
-                associativity = RIGHT;
+            case COS:
+                associate = associativity.RIGHT;
                 break;
-            case Characters.FUNCTION_TAN:
-                func = TAN;
-                associativity = RIGHT;
+            case TAN:
+                associate = associativity.RIGHT;
                 break;
         }
     }
+
+    Function(String sym) {
+        this(Symbols.funcStringMap.inverse().get(sym));
+    }
+
+    associativity associativity() {
+        return associate;
+    }
+
+    enum function {SQRT, FACTORIAL, SIN, COS, TAN}
 
     void run(Numeral a) {
         switch (func) {
@@ -273,7 +372,11 @@ class Function extends ExpressionElement {
         }
     }
 
-    boolean associativity() {
-        return associativity;
+    enum associativity {LEFT, RIGHT}
+}
+
+class NumberException extends Exception {
+    NumberException(String s) {
+        super(s);
     }
 }
