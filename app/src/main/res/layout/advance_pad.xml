@@ -154,7 +154,7 @@
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform"
                     android:onClick="enterValue"
-                    android:tag="f/sq"
+                    android:tag="f/square"
                     android:text="@string/string_sq" />
 
                 <Button

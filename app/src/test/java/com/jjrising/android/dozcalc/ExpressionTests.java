@@ -34,14 +34,14 @@ public class ExpressionTests {
     @Test
     public void digitTests() throws CalculationError, NumberException {
         Expression add = new Expression();
-        Digit d1 = new Digit("4");
-        Digit d2 = new Digit(3);
-        Digit d3 = new Digit(Digit.values.dot);
-        Digit d4 = new Digit("6");
-        Digit d5 = new Digit("X");
-        Digit d6 = new Digit("1");
-        Digit d7 = new Digit(".");
-        Digit d8 = new Digit("E");
+        Digit d1 = Digit.fromString("4");
+        Digit d2 = Digit.fromString("3");
+        Digit d3 = Digit.fromString(".");
+        Digit d4 = Digit.fromString("6");
+        Digit d5 = Digit.fromString("X");
+        Digit d6 = Digit.fromString("1");
+        Digit d7 = Digit.fromString(".");
+        Digit d8 = Digit.fromString("E");
         ArrayList<Digit> l1 = new ArrayList<>();
         l1.add(d1);
         l1.add(d2);

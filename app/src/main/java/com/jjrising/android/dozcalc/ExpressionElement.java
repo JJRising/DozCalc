@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Objects;
 
 class ExpressionElement {
 
@@ -18,59 +19,68 @@ class ExpressionElement {
     }
 
     String getSymbol() {
-        return "S";
+        return "null";
     }
 
     enum type {DIGIT, NUMBER, OPERATOR, PARENTHESES, FUNCTION}
 }
 
 class Digit extends ExpressionElement {
-    private values val;
+    private digitType val;
     private int num;
+    private value[] valueReference = new value[]{
+            value.d0, value.d1, value.d2, value.d3, value.d4, value.d5,
+            value.d6, value.d7, value.d8, value.d9, value.dX, value.dE
+    };
 
-    Digit(values val) throws NumberException {
+    private Digit(digitType val) {
         super(type.DIGIT);
-        if (val == values.dot) {
-            this.val = val;
+        this.val = val;
+        if (val == digitType.dot) {
             num = -1;
         } else {
-            throw new NumberException("Created a digit with no assigned number");
+            num = 0;
         }
     }
 
-    Digit(int num) {
+    private Digit(int num) {
         super(type.DIGIT);
-        this.val = values.number;
+        this.val = digitType.number;
         this.num = num;
     }
 
-    Digit(String s) {
-        super(type.DIGIT);
+    static Digit fromString(String s) {
         switch (s) {
             case ".":
-                val = values.dot;
-                break;
+                return new Digit(digitType.dot);
             case "X":
-                val = values.number;
-                num = 10;
-                break;
+                return new Digit(10);
             case "E":
-                val = values.number;
-                num = 11;
-                break;
+                return new Digit(11);
             default:
-                val = values.number;
-                num = Integer.parseInt(s);
-                break;
+                return new Digit(Integer.valueOf(s));
+        }
+    }
+
+    static Digit fromTag(String tag) {
+        switch (tag) {
+            case "d/.":
+                return new Digit(digitType.dot);
+            case "d/X":
+                return new Digit(10);
+            case "d/E":
+                return new Digit(11);
+            default:
+                return new Digit(Integer.valueOf(tag.substring(2)));
         }
     }
 
     boolean isDot() {
-        return val == values.dot;
+        return val == digitType.dot;
     }
 
     int getNum() throws NumberException {
-        if (val == values.dot) {
+        if (val == digitType.dot) {
             throw new NumberException("Accessing value of a dot");
         } else {
             return num;
@@ -79,27 +89,35 @@ class Digit extends ExpressionElement {
 
     @Override
     String getSymbol() {
-        if (val == values.dot) {
-            return Symbols.DOT;
+        if (val == digitType.dot) {
+            return Symbols.symMap.get(value.DOT);
         } else {
-            return Character.toString(Symbols.getCharacter(num));
+            return Symbols.symMap.get(valueReference[num]);
         }
     }
 
-    enum values {dot, number}
+    enum value implements SymbolCode {
+        DOT, d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, dX, dE
+    }
+
+    enum digitType {dot, number}
 }
 
 /**
- * Class for all real number values used in expressions and
+ * Class for all real number digitType used in expressions and
  * solutions.
  */
 class Numeral extends ExpressionElement {
     private double value;
     private boolean exact;
+    private boolean isSpecial;
+    private specials symCode;
 
     Numeral(double value) {
         super(type.NUMBER);
         this.value = value;
+        this.exact = true;
+        isSpecial = false;
     }
 
     Numeral(ArrayList<Digit> builder) throws NumberException {
@@ -144,10 +162,54 @@ class Numeral extends ExpressionElement {
                 value += addValue;
             }
         }
+        this.exact = true;
+        this.isSpecial = false;
     }
 
-    Numeral(String str) {
-        this(Symbols.specialStringMap.get(str));
+    private Numeral(specials symCode) {
+        super(type.NUMBER);
+        switch (symCode) {
+            case EULERS_NUM:
+                this.value = Math.E;
+                break;
+            case PI:
+                this.value = Math.PI;
+                break;
+        }
+        this.exact = false;
+        this.isSpecial = true;
+        this.symCode = symCode;
+    }
+
+    static Numeral fromTag(String tag) {
+        switch (tag) {
+            case "special/pi":
+                return new Numeral(specials.PI);
+            case "special/eulersNum":
+                return new Numeral(specials.EULERS_NUM);
+            default:
+                return new Numeral(0);
+        }
+    }
+
+    static Numeral fromString(String s) throws StringException {
+        switch (s) {
+            case "pi":
+                return new Numeral(specials.PI);
+            case "e":
+                return new Numeral(specials.EULERS_NUM);
+            default:
+                throw new StringException();
+        }
+    }
+
+    @Override
+    String getSymbol() {
+        if (isSpecial) {
+            return Symbols.symMap.get(symCode);
+        } else {
+            return "n";
+        }
     }
 
     double getValue() {
@@ -158,17 +220,12 @@ class Numeral extends ExpressionElement {
         this.value = value;
     }
 
-    @Override
-    String getSymbol() {
-        return Symbols.specialStringMap.inverse().get(value);
-    }
-
     /**
      * Returns a string showing the value of the Numeral in dozenal.
      * <p>
      * Interesting part of the project. I am using the JDK source
      * code as a guide of how to implement the conversion of floating
-     * point values into strings.
+     * point digitType into strings.
      *
      * @return - value as a string in dozenal.
      */
@@ -211,6 +268,8 @@ class Numeral extends ExpressionElement {
         return buf.toJavaFormatString();
     }
 
+    enum specials implements SymbolCode {EULERS_NUM, PI}
+
     boolean isExact() {
         return exact;
     }
@@ -225,10 +284,10 @@ class Operator extends ExpressionElement {
     private associativity associate;
     private int precedence;
 
-    Operator(operator value) {
+    Operator(operator symCode) {
         super(type.OPERATOR);
-        this.value = value;
-        switch (value) {
+        this.value = symCode;
+        switch (symCode) {
             case ADD:
                 precedence = 2;
                 associate = associativity.LEFT;
@@ -252,15 +311,39 @@ class Operator extends ExpressionElement {
         }
     }
 
-    Operator(String sym) {
-        this(Symbols.opStringMap.inverse().get(sym));
+    static Operator fromTag(String tag) {
+        return new Operator((operator) Objects.requireNonNull(Symbols.tagMap.get(tag)));
+    }
+
+    static Operator fromString(String s) throws StringException {
+        switch (s) {
+            case "+":
+                return new Operator(operator.ADD);
+            case "-":
+                return new Operator(operator.SUBTRACT);
+            case "*":
+                return new Operator(operator.MULTIPLY);
+            case "/":
+                return new Operator(operator.DIVIDE);
+            case "^":
+                return new Operator(operator.EXPONENT);
+            default:
+                throw new StringException();
+        }
+    }
+
+    @Override
+    String getSymbol() {
+        return Symbols.symMap.get(value);
+    }
+
+    enum operator implements SymbolCode {
+        ADD, SUBTRACT, MULTIPLY, DIVIDE, EXPONENT
     }
 
     associativity associativity() {
         return associate;
     }
-
-    enum operator {ADD, SUBTRACT, MULTIPLY, DIVIDE, EXPONENT}
 
     void run(Numeral a, Numeral b) {
         switch (value) {
@@ -287,11 +370,6 @@ class Operator extends ExpressionElement {
     }
 
     enum associativity {LEFT, RIGHT}
-
-    @Override
-    String getSymbol() {
-        return Symbols.opStringMap.get(value);
-    }
 }
 
 class Paren extends ExpressionElement {
@@ -305,7 +383,7 @@ class Paren extends ExpressionElement {
         return dir == direction.OPEN;
     }
 
-    enum direction {OPEN, CLOSE}
+    enum direction implements SymbolCode {OPEN, CLOSE}
 }
 
 class OpenParen extends Paren {
@@ -316,7 +394,7 @@ class OpenParen extends Paren {
 
     @Override
     String getSymbol() {
-        return Symbols.OPEN_PAREN;
+        return Symbols.symMap.get(direction.OPEN);
     }
 }
 
@@ -328,7 +406,7 @@ class CloseParen extends Paren {
 
     @Override
     String getSymbol() {
-        return Symbols.CLOSE_PAREN;
+        return Symbols.symMap.get(direction.CLOSE);
     }
 }
 
@@ -337,7 +415,7 @@ class Function extends ExpressionElement {
     private function func;
     private associativity associate;
 
-    Function(function func) {
+    private Function(function func) {
         super(type.FUNCTION);
         this.func = func;
         switch (func) {
@@ -359,15 +437,40 @@ class Function extends ExpressionElement {
         }
     }
 
-    Function(String sym) {
-        this(Symbols.funcStringMap.inverse().get(sym));
+    static Function fromTag(String tag) {
+        return new Function((function) Objects.requireNonNull(Symbols.tagMap.get(tag)));
+    }
+
+    static Function fromString(String s) throws StringException {
+        switch (s) {
+            case "!":
+                return new Function(function.FACTORIAL);
+            case "sqrt":
+                return new Function(function.SQRT);
+            case "sin":
+                return new Function(function.SIN);
+            case "cos":
+                return new Function(function.COS);
+            case "tan":
+                return new Function(function.TAN);
+            default:
+                throw new StringException();
+        }
+    }
+
+    @Override
+    String getSymbol() {
+        return Symbols.symMap.get(func);
+    }
+
+    enum function implements SymbolCode {
+        SQRT, FACTORIAL, SIN, COS, TAN, ARCSIN, ARCCOS, ARCTAN, SQUARE,
+        LN, LOGX, LOG10, LOGZ
     }
 
     associativity associativity() {
         return associate;
     }
-
-    enum function {SQRT, FACTORIAL, SIN, COS, TAN}
 
     void run(Numeral a) {
         switch (func) {
@@ -401,15 +504,16 @@ class Function extends ExpressionElement {
     }
 
     enum associativity {LEFT, RIGHT}
-
-    @Override
-    String getSymbol() {
-        return Symbols.funcStringMap.get(func);
-    }
 }
 
 class NumberException extends Exception {
     NumberException(String s) {
         super(s);
+    }
+}
+
+class StringException extends Exception {
+    StringException() {
+        super("Invalid string input.");
     }
 }

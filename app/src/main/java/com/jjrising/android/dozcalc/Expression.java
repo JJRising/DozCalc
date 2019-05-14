@@ -14,19 +14,21 @@ class Expression {
         this.express = express;
     }
 
-    Expression(String str) {
+    Expression(String str) throws StringException {
         express = new ArrayList<>();
         StringBuilder builder = new StringBuilder();
         for (char ch : str.toCharArray()) {
             builder.append(ch);
             if (builder.toString().matches("[XE\\d.]")) {
-                express.add(new Digit(builder.toString()));
+                express.add(Digit.fromString(builder.toString()));
             } else if (builder.toString().matches("[+\\-*/^]")) {
-                express.add(new Operator(builder.toString()));
+                express.add(Operator.fromString(builder.toString()));
             } else if (builder.toString().matches("[!]|sqrt|sin|cos|tan")) {
-                express.add(new Function(builder.toString()));
+                express.add(Function.fromString(builder.toString()));
+            } else if (builder.toString().matches("pi|e")) {
+                express.add(Numeral.fromString(builder.toString()));
             } else if (builder.toString().matches("[()]")) {
-                if (builder.equals("("))
+                if (builder.toString().equals("("))
                     express.add(new OpenParen());
                 else // builder.equals(")")
                     express.add(new CloseParen());
@@ -185,7 +187,7 @@ class Expression {
                 size -= 1;
             }
         }
-        // There should only be 1 element remaining in the ListIterator and it should be
+        // There should only be 1 OldSymbolCode remaining in the ListIterator and it should be
         // a Numeral.
         if (size != 1) {
             throw new CalculationError(
@@ -194,7 +196,7 @@ class Expression {
         ExpressionElement ret = calcIterator.previous();
         if (ret.getType() != ExpressionElement.type.NUMBER) {
             throw new CalculationError(
-                    "Remaining element was an operator. Likely an invalid input");
+                    "Remaining OldSymbolCode was an operator. Likely an invalid input");
         }
         return (Numeral) ret;
     }

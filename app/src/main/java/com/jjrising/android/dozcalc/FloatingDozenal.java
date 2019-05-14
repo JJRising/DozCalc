@@ -25,8 +25,8 @@
 
 /*
  * This code has been heavily modified as of March 25th, 2019 for the purpose
- * of its use in calculating floating-point values to base12 numerals. Much
- * of the original structure remains the same though many hard-coded values
+ * of its use in calculating floating-point digitType to base12 numerals. Much
+ * of the original structure remains the same though many hard-coded digitType
  * were modified for the purposes of runtime efficiency as well as required
  * mathematical changes. Code that was unnecessary to the DozCalc project was
  * removed. I have NOT noted the inline changes due to the frequency at which
@@ -201,7 +201,7 @@ class FloatingDozenal {
 
             boolean exactDecimalConversion;
 
-            // The number of bits in the mantissa that represent fractional values. (>0 but <1)
+            // The number of bits in the mantissa that represent fractional digitType. (>0 but <1)
             int fractionalBits = Math.max(0, numOfMantissaBits - binExp - 1);
 
             // Can it be represented in a long?
@@ -471,7 +471,7 @@ class FloatingDozenal {
          * <p>
          * I am going to estimate the exponent by taking the function:
          * y = log12(x)
-         * and draw a linear line passing through the points at the x values
+         * and draw a linear line passing through the points at the x digitType
          * 1.5(1.3 in base 12) and 2.1(1.9 in base 12). (25% and 75% across 1.2 and
          * 2.4). It should be a much better approximation than what Steel and White
          * were using.
@@ -695,7 +695,7 @@ class FDBigInteger {
 
     private int data[];  // value: data[0] is least significant
     private int offset;  // number of least significant zero padding ints
-    private int nWords;  // data[nWords-1]!=0, all values above are zero
+    private int nWords;  // data[nWords-1]!=0, all digitType above are zero
     // if nWords==0 -> this FDBigInteger is zero
     private boolean isImmutable = false;
 
@@ -703,12 +703,12 @@ class FDBigInteger {
      * Constructs an <code>FDBigInteger</code> from data and padding. The
      * <code>data</code> parameter has the least significant <code>int</code> at
      * the zeroth index. The <code>offset</code> parameter gives the number of
-     * zero <code>int</code>s to be inferred below the least significant element
+     * zero <code>int</code>s to be inferred below the least significant OldSymbolCode
      * of <code>data</code>.
      *
      * @param data   An array containing all non-zero <code>int</code>s of the value.
      * @param offset An offset indicating the number of zero <code>int</code>s to pad
-     *               below the least significant element of <code>data</code>.
+     *               below the least significant OldSymbolCode of <code>data</code>.
      */
     private FDBigInteger(int[] data, int offset) {
         this.data = data;
@@ -1125,7 +1125,7 @@ class FDBigInteger {
             }
             return 0;
         } else if (thSize > sSize) {
-            throw new IllegalArgumentException("disparate values");
+            throw new IllegalArgumentException("disparate digitType");
         }
         // estimate q the obvious way. We will usually be
         // right. If not, then we're only off by a little and
@@ -1155,7 +1155,7 @@ class FDBigInteger {
                 // Originally the following line read
                 // "if ( sum !=0 && sum != -1 )"
                 // but that would be wrong, because of the
-                // treatment of the two values as entirely unsigned,
+                // treatment of the two digitType as entirely unsigned,
                 // it would be impossible for a carry-out to be interpreted
                 // as -1 -- it would have to be a single-bit carry-out, or +1.
                 //

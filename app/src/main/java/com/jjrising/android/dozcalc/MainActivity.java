@@ -30,13 +30,13 @@ public class MainActivity extends AppCompatActivity {
             mInputText.setText(mExpression.getText());
         } else {
             if (input.matches("^d/.*"))
-                mExpression.add(new Digit(input.substring(2)));
+                mExpression.add(Digit.fromTag(input));
             else if (input.matches("^o/.*"))
-                mExpression.add(new Operator(input.substring(2)));
+                mExpression.add(Operator.fromTag(input));
             else if (input.matches("^f/.*"))
-                mExpression.add(new Function(input.substring(2)));
+                mExpression.add(Function.fromTag(input));
             else if (input.matches("^special/.*"))
-                mExpression.add(new Numeral(input.substring(2)));
+                mExpression.add(Numeral.fromTag(input));
             else if (input.matches("^p/.*"))
                 if (input.matches("^p/\\("))
                     mExpression.add(new OpenParen());
