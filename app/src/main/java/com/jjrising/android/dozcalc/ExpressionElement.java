@@ -265,7 +265,7 @@ class Numeral extends ExpressionElement {
         FloatingDozenal.BinaryToDozBuffer buf = new FloatingDozenal.BinaryToDozBuffer();
         buf.setSign(isNegative);
         exact = buf.doubleToDoz(exp, mantissa, numberOfSignificantBits);
-        return buf.toJavaFormatString();
+        return isExact() ? buf.toJavaFormatString() : "~" + buf.toJavaFormatString();
     }
 
     enum specials implements SymbolCode {EULERS_NUM, PI}
