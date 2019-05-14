@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
+import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertEquals;
 
 public class ExpressionTests {
@@ -77,22 +78,42 @@ public class ExpressionTests {
 
     @Test
     public void inputExpressionTest() throws CalculationError {
-        Expression ex1 = new Expression("23+5");
-        assertEquals("28", ex1.calc().toString());
+        try {
+            Expression ex1 = new Expression("23+5");
+            assertEquals("28", ex1.calc().toString());
+        } catch (StringException e) {
+            fail(e.getMessage());
+        }
 
-        Expression ex2 = new Expression("5.6-2*2");
-        assertEquals("1.6", ex2.calc().toString());
+        try {
+            Expression ex2 = new Expression("5.6-2*2");
+            assertEquals("1.6", ex2.calc().toString());
+        } catch (StringException e) {
+            fail(e.getMessage());
+        }
     }
 
     @Test
     public void AdvancedExpressions() throws CalculationError {
-        Expression ex1 = new Expression("12^2");
-        assertEquals("144", ex1.calc().toString());
+        try {
+            Expression ex1 = new Expression("12^2");
+            assertEquals("144", ex1.calc().toString());
+        } catch (StringException e) {
+            fail(e.getMessage());
+        }
 
-        Expression ex2 = new Expression("sqrt14");
-        assertEquals("4", ex2.calc().toString());
+        try {
+            Expression ex2 = new Expression("sqrt14");
+            assertEquals("4", ex2.calc().toString());
+        } catch (StringException e) {
+            fail(e.getMessage());
+        }
 
-        Expression ex3 = new Expression("4!");
-        assertEquals("20", ex3.calc().toString());
+        try {
+            Expression ex3 = new Expression("4!");
+            assertEquals("20", ex3.calc().toString());
+        } catch (StringException e) {
+            fail(e.getMessage());
+        }
     }
 }
