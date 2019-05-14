@@ -412,6 +412,9 @@ class CloseParen extends Paren {
 
 class Function extends ExpressionElement {
 
+    // 1.0 / Math.log(12)
+    private final double INVERSE_LN_10 = Double.longBitsToDouble(0x3fd9c1681970c88fL);
+
     private function func;
     private associativity associate;
 
@@ -420,19 +423,21 @@ class Function extends ExpressionElement {
         this.func = func;
         switch (func) {
             case SQRT:
+            case SIN:
+            case COS:
+            case TAN:
+            case ARCSIN:
+            case ARCCOS:
+            case ARCTAN:
+            case LN:
+            case LOGX:
+            case LOGZ:
+            case LOG10:
                 associate = associativity.RIGHT;
                 break;
             case FACTORIAL:
+            case SQUARE:
                 associate = associativity.LEFT;
-                break;
-            case SIN:
-                associate = associativity.RIGHT;
-                break;
-            case COS:
-                associate = associativity.RIGHT;
-                break;
-            case TAN:
-                associate = associativity.RIGHT;
                 break;
         }
     }
@@ -500,6 +505,26 @@ class Function extends ExpressionElement {
             case TAN:
                 a.setValue(Math.tan(a.getValue()));
                 break;
+            case ARCSIN:
+                a.setValue(Math.asin(a.getValue()));
+                break;
+            case ARCCOS:
+                a.setValue(Math.acos(a.getValue()));
+                break;
+            case ARCTAN:
+                a.setValue(Math.atan(a.getValue()));
+                break;
+            case SQUARE:
+                a.setValue(a.getValue() * a.getValue());
+                break;
+            case LN:
+                a.setValue(Math.log(a.getValue()));
+                break;
+            case LOG10:
+                a.setValue(Math.log10(a.getValue()));
+                break;
+            case LOGX:
+                a.setValue(Math.log(a.getValue()) * INVERSE_LN_10);
         }
     }
 

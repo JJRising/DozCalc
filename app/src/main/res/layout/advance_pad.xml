@@ -70,7 +70,7 @@
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform"
                     android:onClick="enterValue"
-                    android:tag="f/log"
+                    android:tag="f/log10"
                     android:text="@string/string_log" />
 
                 <Button
@@ -124,7 +124,7 @@
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform"
                     android:onClick="enterValue"
-                    android:tag="special/e"
+                    android:tag="special/eulersNum"
                     android:text="@string/string_e" />
 
                 <Button

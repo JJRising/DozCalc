@@ -3,6 +3,7 @@ package com.jjrising.android.dozcalc;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
@@ -27,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
         String input = view.getTag().toString();
         if (input.equals("back")) {
             mExpression.back();
-            mInputText.setText(mExpression.getText());
         } else {
             if (input.matches("^d/.*"))
                 mExpression.add(Digit.fromTag(input));
@@ -42,8 +42,9 @@ public class MainActivity extends AppCompatActivity {
                     mExpression.add(new OpenParen());
                 else if (input.matches("^p/\\)"))
                     mExpression.add(new CloseParen());
-            mInputText.setText(mExpression.getText());
         }
+        mInputText.setText(Html.fromHtml(mExpression.getText(),
+                Html.FROM_HTML_MODE_COMPACT));
     }
 
     public void runCalculation(View view) {

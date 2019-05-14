@@ -74,10 +74,10 @@ class Symbols {
         put(Digit.value.DOT, ".");
 
         put(Operator.operator.ADD, "+");
-        put(Operator.operator.SUBTRACT, "+");
-        put(Operator.operator.MULTIPLY, "+");
-        put(Operator.operator.DIVIDE, "+");
-        put(Operator.operator.EXPONENT, "+");
+        put(Operator.operator.SUBTRACT, "-");
+        put(Operator.operator.MULTIPLY, "*");
+        put(Operator.operator.DIVIDE, "/");
+        put(Operator.operator.EXPONENT, "^");
 
         put(Paren.direction.OPEN, "(");
         put(Paren.direction.CLOSE, ")");
@@ -85,10 +85,18 @@ class Symbols {
         put(Numeral.specials.EULERS_NUM, "e");
         put(Numeral.specials.PI, "pi");
 
-        put(Function.function.SQRT, "sqrt");
-        put(Function.function.FACTORIAL, "!");
         put(Function.function.SIN, "sin");
         put(Function.function.COS, "cos");
         put(Function.function.TAN, "tan");
+        put(Function.function.ARCSIN, "sin<sup><small>-1</small></sup>");
+        put(Function.function.ARCCOS, "cos<sup><small>-1</small></sup>");
+        put(Function.function.ARCTAN, "tan<sup><small>-1</small></sup>");
+        put(Function.function.SQRT, "sqrt");
+        put(Function.function.FACTORIAL, "!");
+        put(Function.function.SQUARE, "<sup><small>2</sup><small>");
+        put(Function.function.LN, "ln");
+        put(Function.function.LOGX, "log<sub><small>X</sub></small>");
+        put(Function.function.LOG10, "log<sub><small>10</sub></small>");
+        put(Function.function.LOGZ, "log<sub><small>z</sub></small>");
     }};
 }
