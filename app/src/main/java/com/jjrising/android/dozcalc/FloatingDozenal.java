@@ -98,6 +98,7 @@ class FloatingDozenal {
                 61,
                 62
         };
+
         //TODO: How were these calculated?
         private static int[] insignificantDigitsNumber = {
                 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3,
@@ -120,7 +121,7 @@ class FloatingDozenal {
 
         private static int insignificantDigitsForPow2(int p2) {
             if (p2 > 1 && p2 < insignificantDigitsNumber.length) {
-                return insignificantDigitsNumber[p2];
+                //return insignificantDigitsNumber[p2];
             }
             return 0; // Meaning everything is significant? (Question)
         }
@@ -140,10 +141,12 @@ class FloatingDozenal {
          * @param insignificantDigits - number of insignificant digits
          */
         private void developLongDigits(int dozExponent, long lValue, int insignificantDigits) {
-            if (insignificantDigits != 0) { // insignificantDigits is the number of binary digits we are going to ignore.
+            if (insignificantDigits != 0) {
+                // insignificantDigits is the number of binary digits we are going to ignore.
                 // Discard non-significant low-order bits, while rounding,
                 // up to insignificant value.
-                long pow12 = FDBigInteger.LONG_3_POW[insignificantDigits] << (2 * insignificantDigits); // 12^i == 6^i * 2^i;
+                long pow12 = FDBigInteger.LONG_3_POW[insignificantDigits]
+                        << (insignificantDigits << 1); // 12^i == 3^i * 2^(i+1);
                 long residue = lValue % pow12;
                 lValue /= pow12;
                 dozExponent += insignificantDigits;
@@ -190,7 +193,8 @@ class FloatingDozenal {
                 }
                 digits[nDigit] = Symbols.getCharacter(c);
             }
-            this.dozExponent = dozExponent + 1; // Variable is being re-purposed as a counter of non fractional numbers...
+            this.dozExponent = dozExponent + 1;
+            // Variable is being re-purposed as a counter of non fractional numbers...
             this.firstDigitIndex = nDigit;
             this.nDigits = this.digits.length - nDigit;
         }
@@ -209,7 +213,7 @@ class FloatingDozenal {
                 // If it is a whole number:
                 if (fractionalBits == 0) {
                     int insignificant;
-                    if (binExp > numOfSignificantBits) { // numOfSignificantBits will be 53
+                    if (binExp > numOfSignificantBits) {
                         insignificant = insignificantDigitsForPow2(binExp - numOfSignificantBits - 1);
                     } else {
                         insignificant = 0;
@@ -665,7 +669,7 @@ class FDBigInteger {
     // Maximum size of cache of powers of 3 as FDBigIntegers.
     private static final int MAX_THREE_POW = 340;
     // Cache of big powers of 5 as FDBigIntegers.
-    private static final FDBigInteger POW_3_CACHE[];
+    private static final FDBigInteger[] POW_3_CACHE;
     // Constant for casting an int to a long via bitwise AND.
     private final static long LONG_MASK = 0xffffffffL;
 
@@ -693,7 +697,7 @@ class FDBigInteger {
     }
 
 
-    private int data[];  // value: data[0] is least significant
+    private int[] data;  // value: data[0] is least significant
     private int offset;  // number of least significant zero padding ints
     private int nWords;  // data[nWords-1]!=0, all digitType above are zero
     // if nWords==0 -> this FDBigInteger is zero
@@ -831,7 +835,7 @@ class FDBigInteger {
      * @param anticount The left anti-shift, e.g., <code>32-bitcount</code>.
      * @param prev      The prior source value.
      */
-    private static void leftShift(int[] src, int idx, int result[], int bitcount, int anticount, int prev) {
+    private static void leftShift(int[] src, int idx, int[] result, int bitcount, int anticount, int prev) {
         for (; idx > 0; idx--) {
             int v = (prev << bitcount);
             prev = src[idx - 1];

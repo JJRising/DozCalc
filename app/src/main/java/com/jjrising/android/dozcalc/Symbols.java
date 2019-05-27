@@ -7,17 +7,47 @@ interface SymbolCode {
 
 class Symbols {
 
-    static char getCharacter(int i) {
-        if (i < 0 || i > 11) {
-            return 'z';
-        } else if (i < 10) {
-            return (char) (i + 48);
-        } else if (i == 10) {
-            return 'X';
-        } else { // i == 11
-            return 'E';
-        }
-    }
+    static HashMap<SymbolCode, String> symMap = new HashMap<SymbolCode, String>() {{
+        put(Digit.value.d0, "0");
+        put(Digit.value.d1, "1");
+        put(Digit.value.d2, "2");
+        put(Digit.value.d3, "3");
+        put(Digit.value.d4, "4");
+        put(Digit.value.d5, "5");
+        put(Digit.value.d6, "6");
+        put(Digit.value.d7, "7");
+        put(Digit.value.d8, "8");
+        put(Digit.value.d9, "9");
+        put(Digit.value.dX, "\u218a");
+        put(Digit.value.dE, "\u218b");
+        put(Digit.value.DOT, ".");
+
+        put(Operator.operator.ADD, "+");
+        put(Operator.operator.SUBTRACT, "-");
+        put(Operator.operator.MULTIPLY, "*");
+        put(Operator.operator.DIVIDE, "/");
+        put(Operator.operator.EXPONENT, "^");
+
+        put(Paren.direction.OPEN, "(");
+        put(Paren.direction.CLOSE, ")");
+
+        put(Numeral.specials.EULERS_NUM, "e");
+        put(Numeral.specials.PI, "\u03c0");
+
+        put(Function.function.SIN, "sin");
+        put(Function.function.COS, "cos");
+        put(Function.function.TAN, "tan");
+        put(Function.function.ARCSIN, "sin<sup><small>-1</small></sup>");
+        put(Function.function.ARCCOS, "cos<sup><small>-1</small></sup>");
+        put(Function.function.ARCTAN, "tan<sup><small>-1</small></sup>");
+        put(Function.function.SQRT, "\u221a");
+        put(Function.function.FACTORIAL, "!");
+        put(Function.function.SQUARE, "<sup><small>2</sup><small>");
+        put(Function.function.LN, "ln");
+        put(Function.function.LOGX, "log<sub><small>X</sub></small>");
+        put(Function.function.LOG10, "log<sub><small>10</sub></small>");
+        put(Function.function.LOGZ, "log<sub><small>z</sub></small>");
+    }};
 
     static HashMap<String, SymbolCode> tagMap = new HashMap<String, SymbolCode>() {{
         put("d/0", Digit.value.d0);
@@ -58,45 +88,15 @@ class Symbols {
         put("f/logz", Function.function.LOGZ);
     }};
 
-    static HashMap<SymbolCode, String> symMap = new HashMap<SymbolCode, String>() {{
-        put(Digit.value.d0, "0");
-        put(Digit.value.d1, "1");
-        put(Digit.value.d2, "2");
-        put(Digit.value.d3, "3");
-        put(Digit.value.d4, "4");
-        put(Digit.value.d5, "5");
-        put(Digit.value.d6, "6");
-        put(Digit.value.d7, "7");
-        put(Digit.value.d8, "8");
-        put(Digit.value.d9, "9");
-        put(Digit.value.dX, "X");
-        put(Digit.value.dE, "E");
-        put(Digit.value.DOT, ".");
-
-        put(Operator.operator.ADD, "+");
-        put(Operator.operator.SUBTRACT, "-");
-        put(Operator.operator.MULTIPLY, "*");
-        put(Operator.operator.DIVIDE, "/");
-        put(Operator.operator.EXPONENT, "^");
-
-        put(Paren.direction.OPEN, "(");
-        put(Paren.direction.CLOSE, ")");
-
-        put(Numeral.specials.EULERS_NUM, "e");
-        put(Numeral.specials.PI, "pi");
-
-        put(Function.function.SIN, "sin");
-        put(Function.function.COS, "cos");
-        put(Function.function.TAN, "tan");
-        put(Function.function.ARCSIN, "sin<sup><small>-1</small></sup>");
-        put(Function.function.ARCCOS, "cos<sup><small>-1</small></sup>");
-        put(Function.function.ARCTAN, "tan<sup><small>-1</small></sup>");
-        put(Function.function.SQRT, "sqrt");
-        put(Function.function.FACTORIAL, "!");
-        put(Function.function.SQUARE, "<sup><small>2</sup><small>");
-        put(Function.function.LN, "ln");
-        put(Function.function.LOGX, "log<sub><small>X</sub></small>");
-        put(Function.function.LOG10, "log<sub><small>10</sub></small>");
-        put(Function.function.LOGZ, "log<sub><small>z</sub></small>");
-    }};
+    static char getCharacter(int i) {
+        if (i < 0 || i > 11) {
+            return 'z';
+        } else if (i < 10) {
+            return (char) (i + 48);
+        } else if (i == 10) {
+            return '\u218a';
+        } else { // i == 11
+            return '\u218b';
+        }
+    }
 }

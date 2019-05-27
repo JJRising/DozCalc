@@ -17,7 +17,7 @@
 
             <Button
                 android:id="@+id/buttonExponent"
-                style="?android:attr/borderlessButtonStyle"
+                style="@style/CalcButton"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
@@ -27,7 +27,7 @@
 
             <Button
                 android:id="@+id/buttonBack"
-                style="?android:attr/borderlessButtonStyle"
+                style="@style/CalcButton"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
@@ -41,7 +41,7 @@
 
             <Button
                 android:id="@+id/buttonMultiply"
-                style="?android:attr/borderlessButtonStyle"
+                style="@style/CalcButton"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
@@ -51,7 +51,7 @@
 
             <Button
                 android:id="@+id/buttonDivide"
-                style="?android:attr/borderlessButtonStyle"
+                style="@style/CalcButton"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
@@ -65,7 +65,7 @@
 
             <Button
                 android:id="@+id/buttonAdd"
-                style="?android:attr/borderlessButtonStyle"
+                style="@style/CalcButton"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
@@ -75,7 +75,7 @@
 
             <Button
                 android:id="@+id/buttonSubtract"
-                style="?android:attr/borderlessButtonStyle"
+                style="@style/CalcButton"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
@@ -89,7 +89,7 @@
 
             <Button
                 android:id="@+id/buttonDot"
-                style="?android:attr/borderlessButtonStyle"
+                style="@style/CalcButton"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
@@ -99,7 +99,7 @@
 
             <Button
                 android:id="@+id/buttonEquals"
-                style="?android:attr/borderlessButtonStyle"
+                style="@style/CalcButton"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"

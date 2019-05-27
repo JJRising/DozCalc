@@ -4,15 +4,15 @@
     <string name="string_0">0</string>
     <string name="string_1">1</string>
     <string name="string_2">2</string>
-    <string name="string_5">5</string>
-    <string name="string_4">4</string>
     <string name="string_3">3</string>
-    <string name="string_8">8</string>
-    <string name="string_7">7</string>
+    <string name="string_4">4</string>
+    <string name="string_5">5</string>
     <string name="string_6">6</string>
-    <string name="string_el">E</string>
-    <string name="string_dec">X</string>
+    <string name="string_7">7</string>
+    <string name="string_8">8</string>
     <string name="string_9">9</string>
+    <string name="string_dek">\u218a</string>
+    <string name="string_el">\u218b</string>
     <string name="string_dot">.</string>
     <string name="string_equals">=</string>
     <string name="string_backspace"><![CDATA[<-]]></string>
@@ -21,7 +21,7 @@
     <string name="string_subtract">-</string>
     <string name="string_divide">/</string>
     <string name="string_multiply">*</string>
-    <string name="string_sqrt">sqrt</string>
+    <string name="string_sqrt">\u221a</string>
     <string name="string_factorial">!</string>
     <string name="string_sin">sin</string>
     <string name="string_cos">cos</string>
@@ -30,10 +30,10 @@
     <string name="string_right_parentheses">)</string>
     <string name="string_ln">ln</string>
     <string name="string_log">log<sub><small>10</small></sub></string>
-    <string name="string_logx">log<sub><small>x</small></sub></string>
+    <string name="string_logx">log<sub><small>\u218a</small></sub></string>
     <string name="string_sq">x<sup><small>2</small></sup></string>
     <string name="string_e">e</string>
-    <string name="string_pi">pi</string>
+    <string name="string_pi">\u03c0</string>
     <string name="string_arcsin">sin<sup><small>-1</small></sup></string>
     <string name="string_arccos">cos<sup><small>-1</small></sup></string>
     <string name="string_arctan">tan<sup><small>-1</small></sup></string>

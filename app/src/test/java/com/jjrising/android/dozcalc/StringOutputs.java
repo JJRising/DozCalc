@@ -60,6 +60,8 @@ public class StringOutputs {
         Numeral nDo = new Numeral(12);
         assertEquals("10", nDo.toString()); // Dec(12)
         Numeral gro = new Numeral(144);
+        Numeral DekDoEight = new Numeral(128);
+        assertEquals("X8", DekDoEight.toString());
         assertEquals("100", gro.toString()); // Dec(144)
         Numeral mo = new Numeral(1728);
         assertEquals("1000", mo.toString()); // Dec(1728)
@@ -80,7 +82,7 @@ public class StringOutputs {
     @Test
     public void largeNumbers() {
         Numeral tenToTheTwelve = new Numeral(1000000000000.0);
-        assertEquals("1.41981E88eE", tenToTheTwelve.toString());
+        assertEquals("1.41981E87854eE", tenToTheTwelve.toString());
         Numeral tenToTheTwenty = new Numeral(100000000000000000000.0);
         assertEquals("3.90X66958X9465e16", tenToTheTwenty.toString());
         long veryBigNumberLong = 0x7FE0_0000_0000_0000L;

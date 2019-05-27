@@ -4,6 +4,6 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="NumPadBackground">#FFFFFF</color>
-    <color name="BasicOpsBackground">#7F80BA</color>
-    <color name="AdvancePadBackground">#4247B0</color>
+    <color name="BasicOpsBackground">#C3CFF5</color>
+    <color name="AdvancePadBackground">#A5A9F1</color>
 </resources>

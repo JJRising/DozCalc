@@ -25,7 +25,7 @@
 
                 <Button
                     android:id="@+id/buttonSin"
-                    style="?android:attr/borderlessButtonStyle"
+                    style="@style/CalcButton"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform"
@@ -35,7 +35,7 @@
 
                 <Button
                     android:id="@+id/buttonCos"
-                    style="?android:attr/borderlessButtonStyle"
+                    style="@style/CalcButton"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform"
@@ -45,7 +45,7 @@
 
                 <Button
                     android:id="@+id/buttonTan"
-                    style="?android:attr/borderlessButtonStyle"
+                    style="@style/CalcButton"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform"
@@ -55,7 +55,7 @@
 
                 <Button
                     android:id="@+id/buttonLn"
-                    style="?android:attr/borderlessButtonStyle"
+                    style="@style/CalcButton"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform"
@@ -65,7 +65,7 @@
 
                 <Button
                     android:id="@+id/buttonLog"
-                    style="?android:attr/borderlessButtonStyle"
+                    style="@style/CalcButton"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform"
@@ -75,7 +75,7 @@
 
                 <Button
                     android:id="@+id/buttonLogX"
-                    style="?android:attr/borderlessButtonStyle"
+                    style="@style/CalcButton"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform"
@@ -89,7 +89,7 @@
 
                 <Button
                     android:id="@+id/arcsin"
-                    style="?android:attr/borderlessButtonStyle"
+                    style="@style/CalcButton"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform"
@@ -99,7 +99,7 @@
 
                 <Button
                     android:id="@+id/arccos"
-                    style="?android:attr/borderlessButtonStyle"
+                    style="@style/CalcButton"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform"
@@ -109,7 +109,7 @@
 
                 <Button
                     android:id="@+id/arctan"
-                    style="?android:attr/borderlessButtonStyle"
+                    style="@style/CalcButton"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform"
@@ -119,26 +119,28 @@
 
                 <Button
                     android:id="@+id/e"
-                    style="?android:attr/borderlessButtonStyle"
+                    style="@style/CalcButton"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform"
                     android:onClick="enterValue"
                     android:tag="special/eulersNum"
+                    android:textAllCaps="false"
                     android:text="@string/string_e" />
 
                 <Button
                     android:id="@+id/pi"
-                    style="?android:attr/borderlessButtonStyle"
+                    style="@style/CalcButton"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform"
                     android:onClick="enterValue"
                     android:tag="special/pi"
+                    android:textAllCaps="false"
                     android:text="@string/string_pi" />
 
                 <Button
-                    style="?android:attr/borderlessButtonStyle"
+                    style="@style/CalcButton"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform" />
@@ -149,7 +151,7 @@
 
                 <Button
                     android:id="@+id/buttonSq"
-                    style="?android:attr/borderlessButtonStyle"
+                    style="@style/CalcButton"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform"
@@ -159,7 +161,7 @@
 
                 <Button
                     android:id="@+id/buttonSqrt"
-                    style="?android:attr/borderlessButtonStyle"
+                    style="@style/CalcButton"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform"
@@ -169,7 +171,7 @@
 
                 <Button
                     android:id="@+id/buttonFactorial"
-                    style="?android:attr/borderlessButtonStyle"
+                    style="@style/CalcButton"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform"
@@ -179,7 +181,7 @@
 
                 <Button
                     android:id="@+id/buttonLeftParen"
-                    style="?android:attr/borderlessButtonStyle"
+                    style="@style/CalcButton"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform"
@@ -189,7 +191,7 @@
 
                 <Button
                     android:id="@+id/buttonRightParen"
-                    style="?android:attr/borderlessButtonStyle"
+                    style="@style/CalcButton"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform"
@@ -198,7 +200,7 @@
                     android:text="@string/string_right_parentheses" />
 
                 <Button
-                    style="?android:attr/borderlessButtonStyle"
+                    style="@style/CalcButton"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:autoSizeTextType="uniform" />
