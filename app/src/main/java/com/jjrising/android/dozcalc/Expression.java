@@ -2,6 +2,7 @@ package com.jjrising.android.dozcalc;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 class Expression {
     private ArrayList<ExpressionElement> express;
@@ -169,22 +170,26 @@ class Expression {
         ListIterator<ExpressionElement> calcIterator = calcQueue.listIterator();
         int size = calcQueue.size();
         while (calcIterator.hasNext()) {
-            el = calcIterator.next();
-            ExpressionElement.type type = el.getType();
-            if (type == ExpressionElement.type.OPERATOR) {
-                calcIterator.remove();
-                Numeral b = (Numeral) calcIterator.previous();
-                calcIterator.remove();
-                Numeral a = (Numeral) calcIterator.previous();
-                ((Operator) el).run(a, b);
-                calcIterator.next();
-                size -= 2;
-            } else if (type == ExpressionElement.type.FUNCTION) {
-                calcIterator.remove();
-                Numeral a = (Numeral) calcIterator.previous();
-                ((Function) el).run(a);
-                calcIterator.next();
-                size -= 1;
+            try {
+                el = calcIterator.next();
+                ExpressionElement.type type = el.getType();
+                if (type == ExpressionElement.type.OPERATOR) {
+                    calcIterator.remove();
+                    Numeral b = (Numeral) calcIterator.previous();
+                    calcIterator.remove();
+                    Numeral a = (Numeral) calcIterator.previous();
+                    ((Operator) el).run(a, b);
+                    calcIterator.next();
+                    size -= 2;
+                } else if (type == ExpressionElement.type.FUNCTION) {
+                    calcIterator.remove();
+                    Numeral a = (Numeral) calcIterator.previous();
+                    ((Function) el).run(a);
+                    calcIterator.next();
+                    size -= 1;
+                }
+            } catch (NoSuchElementException e) {
+                throw new CalculationError("Missing a Numeral somewhere.");
             }
         }
         // There should only be 1 OldSymbolCode remaining in the ListIterator and it should be
